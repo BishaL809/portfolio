@@ -5,986 +5,491 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Bishal Khanal — Flutter Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
 <style>
-/* ── RESET & VARIABLES ─────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg:      #07070B;
-  --s1:      #0D0D14;
-  --s2:      #13131C;
-  --s3:      #1B1B27;
-  --amber:   #F5BD1F;
-  --amber2:  #E0AB10;
-  --ember:   #FF5C1A;
-  --cream:   #EDE8DF;
-  --muted:   #55556A;
-  --muted2:  #7A7A90;
-  --border:  rgba(255,255,255,0.06);
-  --border2: rgba(255,255,255,0.1);
-  --glow:    rgba(245,189,31,0.15);
-  --r:       18px;
-  --font-d:  'Syne', sans-serif;
-  --font-b:  'DM Sans', sans-serif;
-  --font-m:  'Space Mono', monospace;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060609;
+  --s1:#0a0a10;
+  --s2:#10101a;
+  --s3:#17172a;
+  --lime:#c8f135;
+  --lime2:#a8d420;
+  --violet:#7b5ea7;
+  --cream:#e8e4da;
+  --muted:#4a4a62;
+  --muted2:#6e6e88;
+  --border:rgba(255,255,255,0.05);
+  --border2:rgba(200,241,53,0.15);
+  --glow:rgba(200,241,53,0.12);
 }
-html { scroll-behavior: auto; }
-body {
-  background: var(--bg);
-  color: var(--cream);
-  font-family: var(--font-b);
-  font-size: 16px;
-  line-height: 1.7;
-  overflow-x: hidden;
-  cursor: none;
-  -webkit-font-smoothing: antialiased;
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--cream);
+  font-family:'Outfit',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+  cursor:none;
+  -webkit-font-smoothing:antialiased;
 }
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-  background-size: 200px; opacity: 0.6;
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size:180px;opacity:.7;mix-blend-mode:overlay;
 }
-a { text-decoration: none; color: inherit; }
-img { max-width: 100%; }
-::selection { background: var(--amber); color: #000; }
+a{text-decoration:none;color:inherit}
+img{max-width:100%}
+::selection{background:var(--lime);color:#000}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--lime);border-radius:3px}
 
-/* ── SCROLLBAR ─────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 4px; }
+/* CURSOR */
+#cur-outer{position:fixed;width:44px;height:44px;border-radius:50%;border:1px solid rgba(200,241,53,0.4);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);will-change:transform;transition:width .3s cubic-bezier(.25,1,.5,1),height .3s cubic-bezier(.25,1,.5,1),border-color .3s,opacity .3s}
+#cur-inner{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--lime);pointer-events:none;z-index:10000;transform:translate(-50%,-50%);will-change:transform;transition:width .2s,height .2s,background .2s}
+#cur-text{position:fixed;pointer-events:none;z-index:9998;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#000;background:var(--lime);padding:5px 12px;border-radius:100px;opacity:0;white-space:nowrap;transition:opacity .2s;transform:translate(12px,-50%)}
+body.c-hover #cur-inner{width:4px;height:4px;background:var(--lime)}
+body.c-hover #cur-outer{width:60px;height:60px;border-color:rgba(200,241,53,0.2)}
+body.c-label #cur-text{opacity:1}
+body.c-label #cur-outer{opacity:0}
 
-/* ── PROGRESS BAR ──────────────────────────────────────────── */
-#progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--amber); z-index: 1000; width: 0%; transform-origin: left; }
+/* PROGRESS */
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--lime);z-index:1000;width:0%;transition:width .05s linear}
 
-/* ── CUSTOM CURSOR ─────────────────────────────────────────── */
-/* Outer aura — large, slow, blurred glow */
-#cur-aura {
-  position: fixed; width: 320px; height: 320px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(245,189,31,.06) 0%, transparent 60%);
-  pointer-events: none; z-index: 9990;
-  transform: translate(-50%,-50%);
-  will-change: transform;
-}
-/* Mid ring — medium lag, crisp border */
-#cur-ring {
-  position: fixed; width: 36px; height: 36px; border-radius: 50%;
-  border: 1.5px solid rgba(245,189,31,0.5);
-  pointer-events: none; z-index: 9997;
-  transform: translate(-50%,-50%);
-  will-change: transform;
-  transition: width .35s cubic-bezier(.25,1,.5,1),
-              height .35s cubic-bezier(.25,1,.5,1),
-              border-color .3s, opacity .3s;
-}
-/* Inner ball — solid, matches theme, instant follow */
-#cur-dot {
-  position: fixed; width: 10px; height: 10px; border-radius: 50%;
-  background: var(--cream);
-  box-shadow: 0 0 0 1px rgba(245,189,31,.3);
-  pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
-  will-change: transform;
-  transition: width .18s cubic-bezier(.34,1.56,.64,1),
-              height .18s cubic-bezier(.34,1.56,.64,1),
-              background .2s, box-shadow .2s;
-  mix-blend-mode: difference;
-}
-/* Label pill — appears on data-cur-label elements */
-#cur-label {
-  position: fixed; pointer-events: none; z-index: 9996;
-  font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
-  color: #000; background: var(--amber); padding: 5px 12px; border-radius: 100px;
-  opacity: 0; white-space: nowrap;
-  transition: opacity .22s;
-  transform-origin: left center;
-}
-/* Hover states */
-body.cur-hover #cur-dot {
-  width: 6px; height: 6px;
-  background: var(--amber);
-  box-shadow: 0 0 12px rgba(245,189,31,.6), 0 0 0 2px rgba(245,189,31,.25);
-}
-body.cur-hover #cur-ring {
-  width: 54px; height: 54px;
-  border-color: rgba(245,189,31,.25);
-}
-/* Drag / click state */
-body.cur-click #cur-dot {
-  width: 4px; height: 4px;
-  background: var(--amber);
-}
-body.cur-click #cur-ring {
-  width: 28px; height: 28px;
-  border-color: var(--amber);
-}
-body.cur-view #cur-label { opacity: 1; }
-/* Hide ring when label shows (cleaner) */
-body.cur-view #cur-ring { opacity: 0; }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:68px;transition:background .4s,border-bottom .4s}
+nav.scrolled{background:rgba(6,6,9,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.06em;color:var(--cream)}
+.nav-logo em{color:var(--lime);font-style:normal}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);transition:color .2s}
+.nav-links a:hover{color:var(--lime)}
+.nav-cta{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:500;border:1px solid var(--lime);color:var(--lime);padding:10px 24px;border-radius:100px;letter-spacing:.06em;transition:background .2s,color .2s}
+.nav-cta:hover{background:var(--lime);color:#000}
 
-/* ── NAV ───────────────────────────────────────────────────── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 5vw; height: 72px;
-  transition: background .4s, border-color .4s;
-}
-nav.scrolled {
-  background: rgba(7,7,11,.88);
-  backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-logo {
-  font-family: var(--font-d); font-weight: 800; font-size: 1.1rem;
-  color: var(--cream); letter-spacing: -.02em;
-}
-.nav-logo em { color: var(--amber); font-style: normal; }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
-.nav-links a {
-  font-size: .78rem; font-weight: 500; letter-spacing: .1em;
-  color: var(--muted2); text-transform: uppercase;
-  transition: color .2s; position: relative;
-}
-.nav-links a::after {
-  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
-  background: var(--amber); transition: width .3s;
-}
-.nav-links a:hover { color: var(--amber); }
-.nav-links a:hover::after { width: 100%; }
-.nav-cta {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--font-d); font-size: .82rem; font-weight: 700;
-  background: var(--amber); color: #000; padding: 11px 26px; border-radius: 100px;
-  letter-spacing: .02em; transition: background .2s;
-  position: relative; overflow: hidden;
-}
-.nav-cta::before {
-  content: ''; position: absolute; inset: 0; background: var(--ember); opacity: 0;
-  transition: opacity .3s;
-}
-.nav-cta:hover::before { opacity: 1; }
-.nav-cta span { position: relative; z-index: 1; }
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 5vw 80px;max-width:1400px;margin:0 auto;position:relative;z-index:1}
+.hero-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 50% 60% at 15% 70%,rgba(200,241,53,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 50% at 80% 20%,rgba(123,94,167,.05) 0%,transparent 65%)}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);background:rgba(200,241,53,.07);border:1px solid var(--border2);padding:7px 16px;border-radius:100px;margin-bottom:2rem;opacity:0;transform:translateY(20px)}
+.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,14vw,13rem);line-height:.88;letter-spacing:.02em;overflow:hidden;margin-bottom:1.5rem}
+.hero-name .line{display:block;overflow:hidden}
+.hero-name .stroke{-webkit-text-stroke:2px rgba(232,228,218,.25);color:transparent}
+.hero-name .accent{color:var(--lime)}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.hero-desc{max-width:420px;font-size:.95rem;color:var(--muted2);line-height:1.8;opacity:0}
+.hero-desc strong{color:var(--cream);font-weight:500}
+.hero-right-col{display:flex;flex-direction:column;align-items:flex-end;gap:20px;opacity:0}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.hero-scroll-hint{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+.scroll-track{width:40px;height:1px;background:var(--muted);position:relative;overflow:hidden}
+.scroll-track::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--lime);animation:slideRight 1.8s ease-in-out infinite}
+@keyframes slideRight{0%{left:-100%}100%{left:100%}}
+.hero-stats{display:flex;gap:32px}
+.hs-item{text-align:right}
+.hs-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--cream);letter-spacing:.02em;line-height:1}
+.hs-label{font-size:.7rem;color:var(--muted2);letter-spacing:.06em}
 
-/* ── HERO ──────────────────────────────────────────────────── */
-.hero {
-  min-height: 100vh; position: relative; z-index: 1;
-  display: grid; grid-template-columns: 1.2fr 0.8fr;
-  align-items: center; gap: 40px; padding: 120px 5vw 80px;
-  max-width: 1280px; margin: 0 auto;
-}
-.hero-mesh {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 60%, rgba(245,189,31,.07) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 50% at 75% 20%, rgba(255,92,26,.05) 0%, transparent 65%),
-    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(245,189,31,.04) 0%, transparent 55%);
-}
-@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(1.8)} }
+/* BUTTONS */
+.btn-fill{display:inline-flex;align-items:center;gap:8px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:600;background:var(--lime);color:#000;padding:13px 28px;border-radius:100px;cursor:none;transition:box-shadow .3s,transform .2s;position:relative;overflow:hidden}
+.btn-fill::before{content:'';position:absolute;inset:0;background:#fff;opacity:0;transition:opacity .3s}
+.btn-fill:hover::before{opacity:.1}
+.btn-fill:hover{box-shadow:0 0 30px rgba(200,241,53,.35)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:500;background:transparent;color:var(--cream);padding:13px 28px;border-radius:100px;border:1px solid var(--border2);cursor:none;transition:border-color .3s,color .3s}
+.btn-outline:hover{border-color:rgba(200,241,53,.5);color:var(--lime)}
 
-.hero-eyebrow {
-  font-family: var(--font-m); font-size: .78rem; color: var(--muted2);
-  letter-spacing: .06em; margin-bottom: .8rem; opacity: 0;
-}
-h1.hero-name {
-  font-family: var(--font-d); font-weight: 800;
-  font-size: clamp(3.8rem, 8vw, 7.5rem);
-  line-height: .92; letter-spacing: -.04em; color: var(--cream);
-  margin-bottom: .4rem; overflow: hidden;
-}
-h1.hero-name .line { overflow: hidden; display: block; }
-h1.hero-name .amber { color: var(--amber); }
-h1.hero-name .stroke {
-  -webkit-text-stroke: 2px var(--cream);
-  color: transparent;
-}
-.hero-role-wrap {
-  font-family: var(--font-d); font-weight: 600;
-  font-size: clamp(1rem, 1.8vw, 1.45rem);
-  color: var(--muted2); letter-spacing: -.01em;
-  margin-top: 1rem; height: 2em; overflow: hidden;
-  opacity: 0;
-}
-.hero-role-track { display: flex; flex-direction: column; gap: 0; }
-.hero-role-track span { display: block; line-height: 2; }
-.hero-desc {
-  margin-top: 2rem; font-size: .95rem; color: var(--muted2);
-  max-width: 440px; line-height: 1.75; opacity: 0;
-}
-.hero-actions {
-  margin-top: 2.5rem; display: flex; gap: 14px; flex-wrap: wrap; opacity: 0;
-}
-.hero-scroll {
-  margin-top: 4rem; display: flex; align-items: center; gap: 14px; opacity: 0;
-}
-.scroll-line {
-  width: 48px; height: 1px; background: var(--muted); position: relative; overflow: hidden;
-}
-.scroll-line::after {
-  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-  background: var(--amber); animation: lineMove 1.8s ease-in-out infinite;
-}
-@keyframes lineMove { 0%{left:-100%} 100%{left:100%} }
-.scroll-text { font-family: var(--font-m); font-size: .65rem; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+/* MARQUEE */
+.marquee-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0;overflow:hidden;position:relative;z-index:1;background:var(--s1)}
+.marquee-track{display:flex;width:max-content;animation:marquee 20s linear infinite}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{display:flex;align-items:center;gap:24px;margin-right:48px;white-space:nowrap;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.1em;color:var(--muted2)}
+.marquee-item .sep{color:var(--lime);font-size:1rem}
 
-.hero-right {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 20px; position: relative; opacity: 0;
-}
-.hero-big-stat {
-  background: var(--s2); border: 1px solid var(--border2); border-radius: 24px;
-  padding: 32px 36px; text-align: center; position: relative; overflow: hidden;
-  width: 100%;
-}
-.hero-big-stat::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(245,189,31,.06), transparent);
-}
-.hbs-num {
-  font-family: var(--font-d); font-size: 5rem; font-weight: 800;
-  color: var(--amber); line-height: 1; letter-spacing: -.05em;
-}
-.hbs-label { font-size: .78rem; color: var(--muted2); margin-top: 4px; letter-spacing: .04em; }
+/* SECTIONS */
+.section{max-width:1280px;margin:0 auto;padding:120px 5vw;position:relative;z-index:1}
+.divider{border:none;border-top:1px solid var(--border);position:relative;z-index:1}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.eyebrow::before{content:'';width:24px;height:1px;background:var(--lime)}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,5rem);line-height:.92;letter-spacing:.04em;color:var(--cream)}
+.sec-sub{font-size:.92rem;color:var(--muted2);max-width:480px;margin-top:.8rem;line-height:1.8}
 
-.hero-chips { display: flex; gap: 10px; width: 100%; }
-.hero-chip {
-  flex: 1; background: var(--s2); border: 1px solid var(--border);
-  border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 4px;
-  transition: border-color .3s, background .3s;
-}
-.hero-chip:hover { border-color: rgba(245,189,31,.3); background: var(--s3); }
-.hc-icon { font-size: 1.2rem; margin-bottom: 4px; }
-.hc-val { font-family: var(--font-d); font-size: 1.3rem; font-weight: 800; color: var(--cream); }
-.hc-label { font-size: .72rem; color: var(--muted); }
+/* ABOUT / STORY HORIZONTAL */
+#about{background:var(--s1);position:relative;z-index:1}
+.about-header{padding:80px 5vw 48px;max-width:1280px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between}
+.about-scroll-hint{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+.panels-outer{overflow:hidden}
+.panels-track{display:flex;width:max-content;padding:0 5vw 80px}
+.panel{width:38vw;min-width:360px;margin-right:4vw;flex-shrink:0}
+.panel:last-child{margin-right:12vw}
+.panel-inner{background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:40px 36px;height:100%;position:relative;overflow:hidden;transition:border-color .4s}
+.panel-inner:hover{border-color:rgba(200,241,53,.2)}
+.p-glow{position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(200,241,53,.06),transparent 65%);pointer-events:none}
+.p-num{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,241,53,.5);margin-bottom:1.8rem}
+.p-icon{font-size:2rem;display:block;margin-bottom:1.2rem}
+.p-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.04em;color:var(--cream);margin-bottom:.8rem;line-height:1}
+.p-pill{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--lime);border:1px solid rgba(200,241,53,.2);background:rgba(200,241,53,.05);padding:5px 12px;border-radius:100px;margin:1rem 0;word-break:break-word}
+.p-text{font-size:.88rem;color:var(--muted2);line-height:1.85}
+.p-text strong{color:var(--cream);font-weight:500}
+.p-text em{color:var(--lime);font-style:normal}
+.panel-dots{display:flex;gap:6px;padding:20px 5vw 0;max-width:1280px;margin:0 auto}
+.panel-dot{height:3px;border-radius:100px;background:var(--border2);transition:background .3s,width .3s}
+.panel-dot.on{background:var(--lime);width:36px!important}
+.panel-dot{width:20px}
 
-.hero-badge {
-  width: 100%; background: var(--amber); border-radius: 16px;
-  padding: 18px 24px; display: flex; align-items: center; gap: 14px;
-  position: relative; overflow: hidden;
-}
-.hero-badge::after {
-  content: ''; position: absolute; right: -20px; top: -20px; width: 100px; height: 100px;
-  border-radius: 50%; background: rgba(0,0,0,.08);
-}
-.hb-icon { font-size: 1.6rem; }
-.hb-title { font-family: var(--font-d); font-size: .85rem; font-weight: 800; color: #000; }
-.hb-sub { font-size: .72rem; color: rgba(0,0,0,.6); }
+/* PROJECT */
+#project{background:var(--bg)}
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.proj-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);border:1px solid var(--border2);padding:6px 14px;border-radius:100px;display:inline-block;margin-bottom:1.5rem}
+.proj-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,7rem);letter-spacing:.04em;color:var(--cream);line-height:.9;margin-bottom:1.2rem}
+.proj-title .ghost{-webkit-text-stroke:1.5px rgba(200,241,53,.25);color:transparent;display:block}
+.proj-desc{font-size:.92rem;color:var(--muted2);line-height:1.8;max-width:400px;margin-bottom:2rem}
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:2rem}
+.feat-item{display:flex;align-items:center;gap:12px;font-size:.87rem;color:var(--cream);opacity:0;transform:translateX(-16px);transition:opacity .5s,transform .5s}
+.feat-item.vis{opacity:1;transform:none}
+.feat-dot{width:24px;height:24px;border-radius:50%;background:rgba(200,241,53,.08);border:1px solid rgba(200,241,53,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0}
+.stack-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:2rem}
+.stag{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.06em;color:var(--muted2);border:1px solid var(--border);padding:5px 12px;border-radius:100px;transition:color .2s,border-color .2s}
+.stag:hover{color:var(--lime);border-color:var(--border2)}
+.proj-actions{display:flex;gap:12px;margin-bottom:2rem}
 
-/* ── BUTTONS ───────────────────────────────────────────────── */
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--font-d); font-size: .88rem; font-weight: 700;
-  background: var(--amber); color: #000; padding: 14px 32px; border-radius: 100px;
-  position: relative; overflow: hidden; cursor: none;
-  transition: box-shadow .3s;
-  box-shadow: 0 4px 24px rgba(245,189,31,.25);
-}
-.btn-primary:hover { box-shadow: 0 8px 40px rgba(245,189,31,.4); }
-.btn-primary .btn-bg {
-  position: absolute; inset: 0; background: var(--ember); opacity: 0;
-  transition: opacity .3s;
-}
-.btn-primary:hover .btn-bg { opacity: 1; }
-.btn-primary .btn-text { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; }
+/* PHONE */
+.phone-scene{display:flex;justify-content:center;align-items:center;position:relative;height:580px}
+.phone-glow{position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(200,241,53,.12) 0%,transparent 65%)}
+.phone-body{width:230px;height:470px;background:#05050d;border-radius:40px;border:4px solid #181828;position:relative;overflow:hidden;box-shadow:0 50px 90px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.04),inset 0 1px 0 rgba(255,255,255,.05);z-index:2;animation:float 5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(1.5deg)}}
+.phone-notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:56px;height:5px;background:#181828;border-radius:100px;z-index:10}
+.phone-screen{width:100%;height:100%;padding:28px 12px 14px;display:flex;flex-direction:column;gap:9px;background:linear-gradient(160deg,#080b1c 0%,#0b1024 100%);overflow:hidden}
+.ps-header{display:flex;justify-content:space-between;align-items:center}
+.ps-appname{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.08em;color:var(--lime)}
+.ps-time{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.22)}
+.ps-streak-card{background:linear-gradient(135deg,rgba(200,241,53,.1),rgba(200,241,53,.03));border:1px solid rgba(200,241,53,.18);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:9px}
+.psc-icon{font-size:18px;animation:shake .5s ease-in-out infinite alternate}
+@keyframes shake{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+.psc-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--lime);line-height:1}
+.psc-sub{font-size:9px;color:rgba(255,255,255,.3);margin-top:2px}
+.ps-section{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-top:3px}
+.ps-plan{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:11px;padding:11px 12px}
+.ps-plan-title{font-family:'Outfit',sans-serif;font-size:10.5px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.ps-plan-sub{font-size:8.5px;color:rgba(255,255,255,.3)}
+.ps-week{display:flex;flex-direction:column;gap:5px}
+.ps-day{display:flex;align-items:center;gap:6px}
+.ps-day-lbl{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.25);width:18px}
+.ps-day-track{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
+.ps-day-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--lime),var(--lime2));width:0%;transition:width 1.2s cubic-bezier(.16,1,.3,1)}
+.ps-cta{background:var(--lime);border-radius:9px;padding:9px;text-align:center;font-family:'Outfit',sans-serif;font-size:9.5px;font-weight:700;color:#000;margin-top:auto;cursor:none}
 
-.btn-ghost {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--font-d); font-size: .88rem; font-weight: 700;
-  background: transparent; color: var(--cream); padding: 14px 32px; border-radius: 100px;
-  border: 1.5px solid var(--border2); cursor: none;
-  transition: border-color .3s, color .3s, transform .3s;
-}
-.btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+/* SKILLS */
+#skills{background:var(--s1)}
+.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:60px}
+.skill-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sk-card{background:var(--s2);border:1px solid var(--border);border-radius:16px;padding:26px 22px;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s;cursor:none}
+.sk-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 0% 0%,rgba(200,241,53,.07),transparent 60%);opacity:0;transition:opacity .3s}
+.sk-card:hover{border-color:rgba(200,241,53,.25);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.sk-card:hover::before{opacity:1}
+.sk-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;color:rgba(200,241,53,.4);margin-bottom:.9rem}
+.sk-icon{font-size:1.6rem;display:block;margin-bottom:12px;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.sk-card:hover .sk-icon{transform:scale(1.2) rotate(-8deg)}
+.sk-title{font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600;color:var(--cream);margin-bottom:5px}
+.sk-desc{font-size:.78rem;color:var(--muted2);line-height:1.6}
+.skill-bars{display:flex;flex-direction:column;gap:22px}
+.sbar-top{display:flex;justify-content:space-between;margin-bottom:8px}
+.sbar-name{font-size:.88rem;font-weight:500;color:var(--cream)}
+.sbar-pct{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--lime);font-weight:500}
+.sbar-track{height:3px;background:var(--s3);border-radius:100px;overflow:hidden}
+.sbar-fill{height:100%;width:0%;border-radius:100px;background:linear-gradient(90deg,var(--lime),var(--lime2));transition:width 1.4s cubic-bezier(.16,1,.3,1)}
 
-/* ── SECTIONS ──────────────────────────────────────────────── */
-.section { max-width: 1280px; margin: 0 auto; padding: 120px 5vw; position: relative; z-index: 1; }
-.divider { border: none; border-top: 1px solid var(--border); position: relative; z-index: 1; }
-.sec-eyebrow {
-  display: flex; align-items: center; gap: 12px;
-  font-family: var(--font-m); font-size: .68rem; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--amber); margin-bottom: 1.2rem;
-}
-.sec-eyebrow::before {
-  content: ''; width: 28px; height: 1px; background: var(--amber);
-  display: inline-block;
-}
-.sec-title {
-  font-family: var(--font-d); font-weight: 800;
-  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-  letter-spacing: -.04em; color: var(--cream); line-height: 1.0;
-}
-.sec-sub { font-size: .95rem; color: var(--muted2); max-width: 540px; margin-top: .8rem; line-height: 1.75; }
+/* STREAK */
+#streak{background:var(--bg);position:relative;z-index:1;overflow:hidden}
+.streak-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 5vw;position:relative}
+.streak-bg-word{position:absolute;font-family:'Bebas Neue',sans-serif;font-weight:800;font-size:28vw;color:rgba(255,255,255,.018);line-height:1;letter-spacing:.1em;pointer-events:none;user-select:none;top:50%;transform:translateY(-50%)}
+.streak-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
+.streak-label::before,.streak-label::after{content:'';width:28px;height:1px;background:rgba(200,241,53,.35)}
+.streak-number{font-family:'Bebas Neue',sans-serif;font-size:clamp(6rem,18vw,14rem);letter-spacing:.04em;line-height:1;background:linear-gradient(135deg,var(--lime) 0%,#f0ff80 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.streak-sub{font-family:'Outfit',sans-serif;font-size:1.1rem;color:var(--muted2);margin-top:-.5rem}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin:2rem auto;max-width:320px;width:100%}
+.cal-cell{aspect-ratio:1;border-radius:7px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);opacity:0;transform:scale(.5);transition:background .3s,border-color .3s}
+.cal-cell.on{background:rgba(200,241,53,.1);border-color:rgba(200,241,53,.35);color:var(--lime)}
+.cal-cell.fire{font-size:0;background:rgba(200,241,53,.12);border-color:rgba(200,241,53,.4)}
+.cal-cell.fire::before{content:'🔥';font-size:.9rem}
+.streak-stats{display:flex;gap:48px;justify-content:center;margin-top:2rem;flex-wrap:wrap;opacity:0}
+.ss-stat{text-align:center}
+.ss-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--cream);letter-spacing:.02em}
+.ss-lbl{font-size:.72rem;color:var(--muted2)}
+.streak-desc{max-width:440px;margin:1.5rem auto 0;font-size:.9rem;color:var(--muted2);line-height:1.8;opacity:0}
 
-/* ── STORY (HORIZONTAL SCROLL) ─────────────────────────────── */
-#story { background: var(--s1); position: relative; z-index: 1; }
-.story-outer { overflow: hidden; }
-.story-track {
-  display: flex; width: max-content; padding: 80px 5vw 100px;
-}
-.story-panel {
-  width: 42vw; min-width: 400px; margin-right: 5vw;
-  position: relative; flex-shrink: 0;
-  display: flex; flex-direction: column;
-}
-.story-panel:last-child { margin-right: 12vw; }
+/* CONTACT */
+#contact{background:var(--s1)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:3rem}
+.contact-items{display:flex;flex-direction:column;gap:10px;margin-top:2rem}
+.c-item{display:flex;align-items:center;gap:14px;background:var(--s2);border:1px solid var(--border);border-radius:14px;padding:16px 20px;cursor:none;transition:border-color .2s,background .2s,transform .3s}
+.c-item:hover{border-color:rgba(200,241,53,.25);background:var(--s3);transform:translateX(6px)}
+.c-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,241,53,.07);border:1px solid rgba(200,241,53,.15);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:transform .3s}
+.c-item:hover .c-icon-wrap{transform:scale(1.1) rotate(-6deg)}
+.c-lbl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.c-val{font-size:.88rem;color:var(--cream);font-weight:500;margin-top:2px}
+.contact-cta{background:linear-gradient(135deg,var(--s2),var(--s3));border:1px solid var(--border2);border-radius:24px;padding:50px 44px;position:relative;overflow:hidden}
+.cta-orb{position:absolute;right:-50px;bottom:-50px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(200,241,53,.1),transparent 65%)}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:.04em;color:var(--cream);line-height:1.1;margin-bottom:.6rem}
+.cta-title span{color:var(--lime)}
+.cta-sub{font-size:.88rem;color:var(--muted2);margin-bottom:2rem}
 
-/* Panel inner card */
-.sp-card {
-  background: var(--s2); border: 1px solid var(--border);
-  border-radius: 24px; padding: 44px 40px; height: 100%;
-  position: relative; overflow: hidden;
-  transition: border-color .4s, box-shadow .4s;
-}
-.sp-card:hover {
-  border-color: rgba(245,189,31,.2);
-  box-shadow: 0 32px 64px rgba(0,0,0,.4);
-}
-.sp-card-glow {
-  position: absolute; top: -60px; right: -60px; width: 200px; height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(245,189,31,.07), transparent 65%);
-  pointer-events: none;
-}
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:32px 5vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;position:relative;z-index:1;max-width:1280px;margin:0 auto}
+.foot-copy{font-size:.78rem;color:var(--muted)}
+.foot-copy span{color:var(--lime)}
+.foot-links{display:flex;gap:20px}
+.foot-links a{font-size:.75rem;color:var(--muted);transition:color .2s}
+.foot-links a:hover{color:var(--lime)}
 
-.sp-num {
-  font-family: var(--font-m); font-size: .62rem; letter-spacing: .14em;
-  color: var(--amber); text-transform: uppercase; margin-bottom: 1.8rem;
-  display: flex; align-items: center; gap: 12px;
-}
-.sp-num::after { content: ''; flex: 1; height: 1px; background: rgba(245,189,31,.2); max-width: 40px; }
+/* INTRO OVERLAY */
+#overlay{position:fixed;inset:0;background:var(--lime);z-index:99999;display:flex;align-items:center;justify-content:center}
+.overlay-text{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,7rem);letter-spacing:.08em;color:#000}
 
-.sp-icon-wrap {
-  width: 56px; height: 56px; border-radius: 16px;
-  background: rgba(245,189,31,.08); border: 1px solid rgba(245,189,31,.15);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.6rem; margin-bottom: 1.6rem;
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-name{font-size:clamp(4rem,14vw,8rem)}
+  .hero-bottom{flex-direction:column;align-items:flex-start}
+  .hero-right-col{align-items:flex-start}
+  .proj-grid{grid-template-columns:1fr}
+  .phone-scene{display:none}
+  .skills-layout{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .panel{width:82vw}
+  #cur-outer,#cur-inner,#cur-text{display:none}
+  body{cursor:auto}
 }
-.sp-title {
-  font-family: var(--font-d); font-size: 1.7rem; font-weight: 800;
-  letter-spacing: -.035em; color: var(--cream); margin-bottom: 1.2rem; line-height: 1.1;
-}
-.sp-text { font-size: .92rem; color: var(--muted2); line-height: 1.85; }
-.sp-text strong { color: var(--cream); font-weight: 600; }
-.sp-text em { color: var(--amber); font-style: normal; }
-
-.sp-pill {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-family: var(--font-m); font-size: .62rem; letter-spacing: .08em;
-  color: var(--amber); border: 1px solid rgba(245,189,31,.25);
-  background: rgba(245,189,31,.06); padding: 6px 14px; border-radius: 100px;
-  margin: 1.4rem 0 1rem;
-}
-.sp-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--amber); }
-
-/* Story heading */
-.story-heading {
-  padding: 80px 5vw 48px; max-width: none;
-  display: flex; align-items: flex-end; justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-}
-.story-hint {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--font-m); font-size: .66rem; letter-spacing: .1em;
-  color: var(--muted); text-transform: uppercase;
-}
-.sh-arrow { animation: arrowPulse 1.5s ease-in-out infinite; }
-@keyframes arrowPulse { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
-
-/* Progress dots for story */
-.story-dots {
-  display: flex; gap: 8px; padding: 24px 5vw 0;
-}
-.story-dot {
-  width: 24px; height: 3px; border-radius: 100px;
-  background: var(--border2); transition: background .4s, width .4s;
-}
-.story-dot.active { background: var(--amber); width: 40px; }
-
-/* ── FITHUB PROJECT ────────────────────────────────────────── */
-#project { background: var(--bg); }
-.project-inner {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-}
-.proj-label {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--font-m); font-size: .65rem; letter-spacing: .12em;
-  color: var(--amber); text-transform: uppercase; margin-bottom: 1.5rem;
-}
-.proj-label::before { content: ''; width: 20px; height: 1px; background: var(--amber); }
-.proj-title {
-  font-family: var(--font-d); font-weight: 800;
-  font-size: clamp(3rem, 6vw, 6rem);
-  letter-spacing: -.05em; color: var(--cream); line-height: .9; margin-bottom: 1.5rem;
-}
-.proj-title .ghost {
-  display: block; -webkit-text-stroke: 1px rgba(245,189,31,.3); color: transparent;
-}
-.proj-desc { font-size: .95rem; color: var(--muted2); line-height: 1.8; margin-bottom: 2.5rem; max-width: 400px; }
-.features-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 2.5rem; }
-.feature-item {
-  display: flex; align-items: center; gap: 14px;
-  font-size: .9rem; color: var(--cream); opacity: 0; transform: translateX(-20px);
-  transition: opacity .5s, transform .5s;
-}
-.feature-item.visible { opacity: 1; transform: none; }
-.fi-dot {
-  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-  background: rgba(245,189,31,.1); border: 1px solid rgba(245,189,31,.25);
-  display: flex; align-items: center; justify-content: center; font-size: 12px;
-}
-.stack-row { display: flex; flex-wrap: wrap; gap: 8px; }
-.stag {
-  font-family: var(--font-m); font-size: .68rem; letter-spacing: .06em;
-  color: var(--muted2); border: 1px solid var(--border2); padding: 6px 14px;
-  border-radius: 100px; transition: color .2s, border-color .2s, background .2s;
-}
-.stag:hover { color: var(--amber); border-color: rgba(245,189,31,.4); background: rgba(245,189,31,.06); }
-.proj-actions { display: flex; gap: 14px; margin-bottom: 2rem; }
-
-/* ── PHONE MOCKUP ──────────────────────────────────────────── */
-.phone-scene {
-  display: flex; justify-content: center; align-items: center;
-  position: relative; height: 600px;
-}
-.phone-glow-orb {
-  position: absolute; width: 300px; height: 300px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(245,189,31,.15) 0%, transparent 65%);
-  pointer-events: none;
-}
-.phone-frame {
-  width: 240px; height: 480px; background: #060610; border-radius: 44px;
-  border: 5px solid #1e1e30; position: relative; overflow: hidden;
-  box-shadow:
-    0 60px 100px rgba(0,0,0,.8),
-    0 0 0 1px rgba(255,255,255,.04),
-    inset 0 1px 0 rgba(255,255,255,.06);
-  z-index: 2;
-  animation: phoneFloat 5s ease-in-out infinite;
-}
-@keyframes phoneFloat {
-  0%,100%{transform:translateY(0) rotate(-2deg)}
-  50%{transform:translateY(-16px) rotate(1.5deg)}
-}
-.phone-notch {
-  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-  width: 60px; height: 6px; background: #1a1a30; border-radius: 100px; z-index: 10;
-}
-.phone-screen {
-  width: 100%; height: 100%; padding: 32px 14px 16px;
-  display: flex; flex-direction: column; gap: 10px;
-  background: linear-gradient(165deg, #080B1C 0%, #0B1028 50%, #070C1E 100%);
-  overflow: hidden;
-}
-.ps-top { display: flex; justify-content: space-between; align-items: center; }
-.ps-app-name {
-  font-family: var(--font-d); font-size: 13px; font-weight: 800;
-  color: var(--amber); letter-spacing: .04em;
-}
-.ps-time { font-family: var(--font-m); font-size: 10px; color: rgba(255,255,255,.25); }
-.ps-streak-card {
-  background: linear-gradient(135deg, rgba(245,189,31,.12), rgba(245,189,31,.04));
-  border: 1px solid rgba(245,189,31,.2); border-radius: 14px;
-  padding: 12px 14px; display: flex; align-items: center; gap: 10px;
-}
-.psc-flame { font-size: 20px; animation: flameShake .5s ease-in-out infinite alternate; }
-@keyframes flameShake { from{transform:rotate(-5deg)} to{transform:rotate(5deg)} }
-.psc-num {
-  font-family: var(--font-d); font-size: 22px; font-weight: 800;
-  color: var(--amber); line-height: 1;
-}
-.psc-label { font-size: 9px; color: rgba(255,255,255,.35); margin-top: 2px; }
-.ps-section-label {
-  font-family: var(--font-m); font-size: 8px; letter-spacing: .1em;
-  text-transform: uppercase; color: rgba(255,255,255,.25); margin-top: 4px;
-}
-.ps-plan-card {
-  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
-  border-radius: 12px; padding: 12px 13px;
-}
-.ps-plan-title { font-family: var(--font-d); font-size: 11px; font-weight: 700; color: var(--cream); margin-bottom: 3px; }
-.ps-plan-sub { font-size: 9px; color: rgba(255,255,255,.35); }
-.ps-week { display: flex; flex-direction: column; gap: 5px; }
-.ps-day-row { display: flex; align-items: center; gap: 7px; }
-.ps-day-name { font-family: var(--font-m); font-size: 8px; color: rgba(255,255,255,.3); width: 22px; }
-.ps-day-bar { flex: 1; height: 5px; background: rgba(255,255,255,.06); border-radius: 100px; overflow: hidden; }
-.ps-day-fill {
-  height: 100%; border-radius: 100px;
-  background: linear-gradient(90deg, var(--amber), var(--amber2));
-  width: 0%; transition: width 1.2s cubic-bezier(.16,1,.3,1);
-}
-.ps-btn {
-  background: var(--amber); border-radius: 10px; padding: 10px;
-  text-align: center; font-family: var(--font-d);
-  font-size: 10px; font-weight: 800; color: #000; margin-top: auto; cursor: none;
-}
-
-/* ── SKILLS ────────────────────────────────────────────────── */
-#skills { background: var(--s1); }
-.skills-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 64px; }
-.skill-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.skill-card {
-  background: var(--s2); border: 1px solid var(--border); border-radius: var(--r);
-  padding: 28px 26px; position: relative; overflow: hidden; cursor: none;
-  transition: border-color .3s, box-shadow .3s;
-}
-.skill-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at 0% 0%, rgba(245,189,31,.08), transparent 60%);
-  opacity: 0; transition: opacity .3s;
-}
-.skill-card:hover { border-color: rgba(245,189,31,.3); box-shadow: 0 20px 48px rgba(0,0,0,.3); }
-.skill-card:hover::before { opacity: 1; }
-.sc-num {
-  font-family: var(--font-m); font-size: .65rem; letter-spacing: .1em;
-  color: rgba(245,189,31,.5); margin-bottom: 1rem;
-}
-.sc-icon { font-size: 1.8rem; display: block; margin-bottom: 14px; transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
-.skill-card:hover .sc-icon { transform: scale(1.2) rotate(-10deg); }
-.sc-title { font-family: var(--font-d); font-size: 1rem; font-weight: 700; color: var(--cream); margin-bottom: 6px; }
-.sc-desc { font-size: .8rem; color: var(--muted2); line-height: 1.6; }
-
-.skill-bars { display: flex; flex-direction: column; gap: 26px; }
-.sbar { }
-.sbar-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.sbar-name { font-size: .9rem; font-weight: 500; color: var(--cream); }
-.sbar-pct { font-family: var(--font-m); font-size: .82rem; color: var(--amber); font-weight: 700; }
-.sbar-track { height: 4px; background: var(--s3); border-radius: 100px; overflow: hidden; }
-.sbar-fill {
-  height: 100%; border-radius: 100px; width: 0%;
-  background: linear-gradient(90deg, var(--amber), var(--ember));
-  transition: width 1.5s cubic-bezier(.16,1,.3,1);
-}
-
-/* ── STREAK SIMULATOR ──────────────────────────────────────── */
-#streak-section {
-  background: var(--bg); position: relative; z-index: 1;
-  overflow: hidden;
-}
-.streak-inner {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  flex-direction: column; text-align: center; padding: 120px 5vw; position: relative;
-}
-.streak-bg-text {
-  position: absolute; font-family: var(--font-d); font-weight: 800;
-  font-size: 30vw; color: rgba(255,255,255,.02); line-height: 1;
-  letter-spacing: -.06em; pointer-events: none; user-select: none; top: 50%; transform: translateY(-50%);
-}
-.streak-eyebrow {
-  font-family: var(--font-m); font-size: .7rem; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--amber); margin-bottom: 1.5rem;
-  display: flex; align-items: center; gap: 12px;
-}
-.streak-eyebrow::before, .streak-eyebrow::after {
-  content: ''; width: 32px; height: 1px; background: rgba(245,189,31,.4);
-}
-.streak-counter-wrap { position: relative; margin-bottom: 2rem; }
-.streak-num-display {
-  font-family: var(--font-d); font-weight: 800;
-  font-size: clamp(6rem, 18vw, 14rem);
-  letter-spacing: -.06em; line-height: 1;
-  background: linear-gradient(135deg, var(--amber) 0%, var(--ember) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.streak-suffix {
-  font-family: var(--font-d); font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-weight: 700; color: var(--muted2); display: block; margin-top: -.5rem;
-}
-.streak-calendar {
-  display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
-  margin: 2rem auto; max-width: 360px; width: 100%;
-}
-.cal-day {
-  aspect-ratio: 1; border-radius: 8px; background: var(--s2);
-  border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-m); font-size: .65rem; color: var(--muted);
-  position: relative; overflow: hidden;
-  transition: background .4s, border-color .4s, transform .4s;
-  opacity: 0; transform: scale(0.5);
-}
-.cal-day.active {
-  background: rgba(245,189,31,.12); border-color: rgba(245,189,31,.4); color: var(--amber);
-}
-.cal-day.active::before {
-  content: '🔥'; position: absolute; font-size: 1.1rem; opacity: 0;
-  transition: opacity .3s;
-}
-.cal-day.active.fire::before { opacity: 1; }
-.cal-day.fire { font-size: 0; }
-.streak-stats {
-  display: flex; gap: 40px; justify-content: center; margin-top: 2rem;
-  flex-wrap: wrap;
-}
-.ss-item { text-align: center; }
-.ss-num {
-  font-family: var(--font-d); font-size: 2.2rem; font-weight: 800;
-  color: var(--cream); letter-spacing: -.04em;
-}
-.ss-label { font-size: .78rem; color: var(--muted2); }
-.streak-desc {
-  max-width: 480px; margin: 2rem auto 0; font-size: .95rem;
-  color: var(--muted2); line-height: 1.75;
-}
-
-/* ── CONTACT ───────────────────────────────────────────────── */
-#contact { background: var(--s1); }
-.contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-.contact-items { display: flex; flex-direction: column; gap: 12px; margin-top: 2rem; }
-.contact-item {
-  display: flex; align-items: center; gap: 16px;
-  background: var(--s2); border: 1px solid var(--border); border-radius: 16px;
-  padding: 18px 22px; cursor: none;
-  transition: border-color .2s, background .2s, transform .3s;
-}
-.contact-item:hover { border-color: rgba(245,189,31,.3); background: var(--s3); transform: translateX(8px); }
-.ci-icon-wrap {
-  width: 44px; height: 44px; border-radius: 12px;
-  background: rgba(245,189,31,.08); border: 1px solid rgba(245,189,31,.2);
-  display: flex; align-items: center; justify-content: center; font-size: 18px;
-  flex-shrink: 0; transition: transform .3s cubic-bezier(.34,1.56,.64,1);
-}
-.contact-item:hover .ci-icon-wrap { transform: scale(1.1) rotate(-8deg); }
-.ci-label { font-family: var(--font-m); font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.ci-val { font-size: .9rem; color: var(--cream); margin-top: 2px; font-weight: 500; }
-
-.contact-cta-box {
-  background: linear-gradient(135deg, var(--s2), var(--s3));
-  border: 1px solid var(--border2); border-radius: 28px;
-  padding: 56px 48px; position: relative; overflow: hidden;
-}
-.ccb-orb {
-  position: absolute; right: -60px; bottom: -60px; width: 240px; height: 240px;
-  border-radius: 50%; background: radial-gradient(circle, rgba(245,189,31,.12), transparent 65%);
-}
-.ccb-title {
-  font-family: var(--font-d); font-size: 2.2rem; font-weight: 800;
-  color: var(--cream); line-height: 1.15; letter-spacing: -.04em; margin-bottom: .8rem;
-}
-.ccb-title span { color: var(--amber); }
-.ccb-sub { font-size: .88rem; color: var(--muted2); margin-bottom: 2.5rem; }
-
-/* ── FOOTER ────────────────────────────────────────────────── */
-footer {
-  border-top: 1px solid var(--border); padding: 36px 5vw;
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 16px; position: relative; z-index: 1;
-  max-width: 1280px; margin: 0 auto;
-}
-.footer-copy { font-size: .8rem; color: var(--muted); }
-.footer-copy span { color: var(--amber); }
-.footer-links { display: flex; gap: 24px; }
-.footer-links a { font-size: .78rem; color: var(--muted); transition: color .2s; }
-.footer-links a:hover { color: var(--amber); }
-
-/* ── RESPONSIVE ────────────────────────────────────────────── */
-@media (max-width: 960px) {
-  .hero { grid-template-columns: 1fr; text-align: center; }
-  .hero-desc { margin-left: auto; margin-right: auto; }
-  .hero-actions { justify-content: center; }
-  .hero-scroll { justify-content: center; }
-  .hero-right { display: none; }
-  .project-inner { grid-template-columns: 1fr; }
-  .phone-scene { display: none; }
-  .skills-layout { grid-template-columns: 1fr; }
-  .contact-layout { grid-template-columns: 1fr; }
-  .nav-links { display: none; }
-  #cur-dot, #cur-ring, #cur-label, #cur-aura { display: none; }
-  body { cursor: auto; }
-  .story-panel { width: 80vw; }
-}
-@media (max-width: 600px) {
-  .hero-name { font-size: clamp(3rem, 12vw, 4.5rem); }
-  .skill-cards { grid-template-columns: 1fr; }
-}
-
-/* ── OVERLAY TRANSITION ────────────────────────────────────── */
-#page-overlay {
-  position: fixed; inset: 0; background: var(--amber); z-index: 10000;
-  transform-origin: top; pointer-events: none;
+@media(max-width:560px){
+  .hero-stats{gap:20px}
+  .hero-actions{flex-direction:column;width:100%}
+  .skill-cards{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- Page Overlay -->
-<div id="page-overlay"></div>
-
-<!-- Progress -->
-<div id="progress"></div>
-
-<!-- Cursor -->
-<div id="cur-aura"></div>
-<div id="cur-ring"></div>
-<div id="cur-dot"></div>
-<div id="cur-label">View</div>
-
-<!-- Background Mesh -->
+<div id="overlay"><span class="overlay-text" id="overlay-text">BK.</span></div>
+<div id="prog"></div>
+<div id="cur-outer"></div>
+<div id="cur-inner"></div>
+<div id="cur-text">View</div>
 <div class="hero-mesh" aria-hidden="true"></div>
 
-<!-- ══ NAV ════════════════════════════════════════════════════ -->
-<nav id="nav" aria-label="Main navigation">
+<!-- NAV -->
+<nav id="nav">
   <a class="nav-logo" href="#">BK<em>.</em></a>
   <ul class="nav-links">
-    <li><a href="#story" data-nav>About</a></li>
-    <li><a href="#project" data-nav>FitHub</a></li>
-    <li><a href="#skills" data-nav>Skills</a></li>
-    <li><a href="#streak-section" data-nav>Streak</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#project">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#streak">Streak</a></li>
   </ul>
-  <a href="#contact" class="nav-cta mag-btn" data-cur-label="Say Hello">
-    <span>Let's Talk →</span>
-  </a>
+  <a href="#contact" class="nav-cta c-btn" data-label="Say Hello">Let's Talk →</a>
 </nav>
 
-<!-- ══ HERO ═══════════════════════════════════════════════════ -->
-<section class="hero" id="home" aria-label="Hero">
-  <div class="hero-left">
-    <p class="hero-eyebrow" id="hero-eyebrow">Hi, I'm</p>
-
-    <h1 class="hero-name" id="hero-name" aria-label="Bishal Khanal">
-      <span class="line" id="line-1">BISHAL</span>
-      <span class="line" id="line-2"><span class="amber">KHA</span><span class="stroke">NAL.</span></span>
-    </h1>
-
-    <div class="hero-role-wrap" id="hero-role" aria-live="polite">
-      <div class="hero-role-track" id="role-track">
-        <span>Flutter Developer</span>
-        <span>Mobile Architect</span>
-        <span>AI Student @ Parul</span>
-        <span>Health-Tech Builder</span>
-        <span>Flutter Developer</span>
-      </div>
-    </div>
-
-    <p class="hero-desc" id="hero-desc">
-      I build cross-platform mobile apps with clean UI and real-time data. 
-      Currently pursuing <strong style="color:var(--cream)">MCA (AI)</strong> at Parul University — 
-      where code meets curiosity.
-    </p>
-
-    <div class="hero-actions" id="hero-actions">
-      <a href="https://github.com/BishaL809/FitHub/releases" target="_blank" class="btn-primary mag-btn" data-cur-label="Download">
-        <div class="btn-bg"></div>
-        <span class="btn-text">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download FitHub APK
-        </span>
-      </a>
-      <a href="#contact" class="btn-ghost mag-btn" data-cur-label="Contact">Get in Touch →</a>
-    </div>
-
-    <div class="hero-scroll" id="hero-scroll">
-      <div class="scroll-line"></div>
-      <span class="scroll-text">Scroll to explore</span>
-    </div>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-tag" id="htag">
+    <span class="dot"></span>
+    Flutter Developer · MCA (AI) Student
   </div>
 
-  <div class="hero-right" id="hero-right">
-    <div class="hero-big-stat">
-      <div class="hbs-num">1+</div>
-      <div class="hbs-label">App Launched on GitHub</div>
+  <h1 class="hero-name" id="heroname" aria-label="Bishal Khanal">
+    <span class="line" id="l1">BISHAL</span>
+    <span class="line" id="l2"><span class="accent">KHA</span><span class="stroke">NAL.</span></span>
+  </h1>
+
+  <div class="hero-bottom">
+    <div>
+      <p class="hero-desc" id="hdesc">
+        Building cross-platform apps with <strong>Flutter</strong> and <strong>Firebase</strong>.
+        Currently pursuing <strong>MCA in Artificial Intelligence</strong> at Parul University —
+        where code meets curiosity.
+      </p>
+      <div class="hero-actions" style="margin-top:2rem;opacity:0" id="hactions">
+        <a href="https://github.com/BishaL809/FitHub/releases" target="_blank" class="btn-fill c-btn" data-label="Download">
+          ↓ Download FitHub APK
+        </a>
+        <a href="#contact" class="btn-outline c-btn" data-label="Contact">Get in Touch</a>
+      </div>
+      <div class="hero-scroll-hint" style="margin-top:2rem;opacity:0" id="hscroll">
+        <div class="scroll-track"></div>
+        Scroll to explore
+      </div>
     </div>
-    <div class="hero-chips">
-      <div class="hero-chip">
-        <div class="hc-icon">📱</div>
-        <div class="hc-val">Flutter</div>
-        <div class="hc-label">Primary Stack</div>
-      </div>
-      <div class="hero-chip">
-        <div class="hc-icon">🔥</div>
-        <div class="hc-val">Firebase</div>
-        <div class="hc-label">Backend</div>
-      </div>
-      <div class="hero-chip">
-        <div class="hc-icon">🤖</div>
-        <div class="hc-val">AI/ML</div>
-        <div class="hc-label">Currently Learning</div>
-      </div>
-    </div>
-    <div class="hero-badge">
-      <div class="hb-icon">🎓</div>
-      <div>
-        <div class="hb-title">MCA — Artificial Intelligence</div>
-        <div class="hb-sub">Parul University · 2025–2026</div>
+
+    <div class="hero-right-col" id="hright">
+      <div class="hero-stats">
+        <div class="hs-item">
+          <div class="hs-num">1+</div>
+          <div class="hs-label">App on GitHub</div>
+        </div>
+        <div class="hs-item">
+          <div class="hs-num">3yr</div>
+          <div class="hs-label">Flutter Dev</div>
+        </div>
+        <div class="hs-item">
+          <div class="hs-num">2x</div>
+          <div class="hs-label">Platforms</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="divider"/>
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Flutter <span class="sep">✦</span></div>
+    <div class="marquee-item">Firebase <span class="sep">✦</span></div>
+    <div class="marquee-item">Dart <span class="sep">✦</span></div>
+    <div class="marquee-item">AI/ML <span class="sep">✦</span></div>
+    <div class="marquee-item">Firestore <span class="sep">✦</span></div>
+    <div class="marquee-item">Android <span class="sep">✦</span></div>
+    <div class="marquee-item">iOS <span class="sep">✦</span></div>
+    <div class="marquee-item">Python <span class="sep">✦</span></div>
+    <div class="marquee-item">Git <span class="sep">✦</span></div>
+    <div class="marquee-item">UI/UX <span class="sep">✦</span></div>
+    <!-- Duplicate -->
+    <div class="marquee-item">Flutter <span class="sep">✦</span></div>
+    <div class="marquee-item">Firebase <span class="sep">✦</span></div>
+    <div class="marquee-item">Dart <span class="sep">✦</span></div>
+    <div class="marquee-item">AI/ML <span class="sep">✦</span></div>
+    <div class="marquee-item">Firestore <span class="sep">✦</span></div>
+    <div class="marquee-item">Android <span class="sep">✦</span></div>
+    <div class="marquee-item">iOS <span class="sep">✦</span></div>
+    <div class="marquee-item">Python <span class="sep">✦</span></div>
+    <div class="marquee-item">Git <span class="sep">✦</span></div>
+    <div class="marquee-item">UI/UX <span class="sep">✦</span></div>
+  </div>
+</div>
 
-<!-- ══ STORY ══════════════════════════════════════════════════ -->
-<div id="story">
-  <div class="story-heading section" style="padding-bottom:0;padding-top:80px;">
+<!-- ABOUT -->
+<div id="about">
+  <div class="about-header">
     <div>
-      <div class="sec-eyebrow">The Human Behind the Code</div>
-      <h2 class="sec-title" id="story-title">About Me</h2>
+      <div class="eyebrow">The Human Behind the Code</div>
+      <h2 class="sec-title" id="about-title">About Me</h2>
     </div>
-    <div class="story-hint">
+    <div class="about-scroll-hint">
       <span>Drag or scroll</span>
-      <span class="sh-arrow">→</span>
+      <span style="animation:arrow 1.4s ease-in-out infinite;display:inline-block">→</span>
     </div>
   </div>
-  <div class="story-dots" id="story-dots">
-    <div class="story-dot active"></div>
-    <div class="story-dot"></div>
-    <div class="story-dot"></div>
-    <div class="story-dot"></div>
+  <div class="panel-dots" id="pdots">
+    <div class="panel-dot on"></div>
+    <div class="panel-dot"></div>
+    <div class="panel-dot"></div>
+    <div class="panel-dot"></div>
   </div>
-  <div class="story-outer" id="story-outer">
-    <div class="story-track" id="story-track">
-
-      <div class="story-panel">
-        <div class="sp-card">
-          <div class="sp-card-glow"></div>
-          <div class="sp-num">01 — Roots</div>
-          <div class="sp-icon-wrap">🌄</div>
-          <h3 class="sp-title">Hills, Slow Internet &amp; Big Dreams</h3>
-          <span class="sp-pill">Meghalaya, Northeast India</span>
-          <p class="sp-text">
-            I grew up in <strong>Meghalaya</strong> — lush hills, monsoon rain, and notoriously slow internet. 
-            That last part frustrated me enough to care deeply about <em>how apps felt</em>. 
-            If a button lagged, I noticed. If a UI was ugly, I couldn't unsee it.
-            <br/><br/>
-            That sensitivity turned into obsession. And obsession turned into code.
-          </p>
+  <div class="panels-outer" id="panels-outer">
+    <div class="panels-track" id="panels-track">
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="p-glow"></div>
+          <div class="p-num">01 — Roots</div>
+          <span class="p-icon">🌄</span>
+          <h3 class="p-title">Hills, Slow Internet & Big Dreams</h3>
+          <div class="p-pill">Meghalaya, Northeast India</div>
+          <p class="p-text">Grew up in <strong>Meghalaya</strong> — lush hills, monsoon rain, notoriously slow internet. That frustration made me care deeply about <em>how apps feel</em>. If a button lagged, I noticed. That sensitivity turned into obsession, and obsession turned into code.</p>
         </div>
       </div>
-
-      <div class="story-panel">
-        <div class="sp-card">
-          <div class="sp-card-glow"></div>
-          <div class="sp-num">02 — The Spark</div>
-          <div class="sp-icon-wrap">⚡</div>
-          <h3 class="sp-title">Flutter Clicked. Everything Changed.</h3>
-          <span class="sp-pill">BCA · 2022–2025 · NEHU</span>
-          <p class="sp-text">
-            Three years at <strong>North East Hill University</strong> doing BCA. First year I was confused. 
-            Second year, I discovered Flutter — <em>one codebase, two platforms, infinite possibilities</em>.
-            <br/><br/>
-            That moment of shipping my first app on Android and iOS simultaneously felt like a cheat code. 
-            I wanted more of that feeling.
-          </p>
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="p-glow"></div>
+          <div class="p-num">02 — The Spark</div>
+          <span class="p-icon">⚡</span>
+          <h3 class="p-title">Flutter Clicked. Everything Changed.</h3>
+          <div class="p-pill">BCA · 2022–2025 · NEHU</div>
+          <p class="p-text">Three years at <strong>North East Hill University</strong>. First year confused. Second year — discovered Flutter. <em>One codebase, two platforms, infinite possibilities.</em> Shipping my first app on Android and iOS simultaneously felt like a cheat code.</p>
         </div>
       </div>
-
-      <div class="story-panel">
-        <div class="sp-card">
-          <div class="sp-card-glow"></div>
-          <div class="sp-num">03 — The Why</div>
-          <div class="sp-icon-wrap">💪</div>
-          <h3 class="sp-title">FitHub Wasn't an Assignment. It Was a Problem.</h3>
-          <span class="sp-pill">Built out of frustration</span>
-          <p class="sp-text">
-            I kept missing workouts. Every app I tried was either paywalled, bloated, or just ugly. 
-            None of them felt like <strong>mine</strong>.
-            <br/><br/>
-            So I built FitHub — not because a professor told me to, but because I genuinely needed it. 
-            Streaks, day-wise plans, <em>real-time Firebase sync</em>. 
-            Clean. Fast. Personal.
-          </p>
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="p-glow"></div>
+          <div class="p-num">03 — The Why</div>
+          <span class="p-icon">💪</span>
+          <h3 class="p-title">FitHub Wasn't an Assignment. It Was a Problem.</h3>
+          <div class="p-pill">Built out of frustration</div>
+          <p class="p-text">Every fitness app was paywalled, bloated, or just ugly. None felt like <strong>mine</strong>. So I built FitHub — not because a professor told me to, but because I genuinely needed it. Streaks, day-wise plans, <em>real-time Firebase sync</em>. Clean. Fast. Personal.</p>
         </div>
       </div>
-
-      <div class="story-panel">
-        <div class="sp-card">
-          <div class="sp-card-glow"></div>
-          <div class="sp-num">04 — Now</div>
-          <div class="sp-icon-wrap">🚀</div>
-          <h3 class="sp-title">Where Code Meets Intelligence</h3>
-          <span class="sp-pill">MCA (AI) · Parul University · 2025–26</span>
-          <p class="sp-text">
-            I'm now pursuing <strong>MCA in Artificial Intelligence</strong> at Parul University — 
-            learning how to make apps that <em>think, predict, and adapt</em>.
-            <br/><br/>
-            The next version of me ships AI-powered health features, smarter recommendations, 
-            and experiences that know what you need before you ask.
-            <strong>Open to internships, freelance, and great conversations.</strong>
-          </p>
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="p-glow"></div>
+          <div class="p-num">04 — Now</div>
+          <span class="p-icon">🚀</span>
+          <h3 class="p-title">Where Code Meets Intelligence</h3>
+          <div class="p-pill">MCA (AI) · Parul University · 2025–26</div>
+          <p class="p-text">Pursuing <strong>MCA in Artificial Intelligence</strong> — learning to make apps that <em>think, predict, and adapt</em>. The next version ships AI-powered health features, smarter recommendations, and experiences that know what you need before you ask. <strong>Open to internships & great conversations.</strong></p>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
 <hr class="divider"/>
 
-<!-- ══ PROJECT ════════════════════════════════════════════════ -->
-<section class="section" id="project" aria-label="FitHub Project">
-  <div class="project-inner" id="proj-inner">
-    <div class="proj-left">
-      <div class="proj-label">Featured Project</div>
+<!-- PROJECT -->
+<section class="section" id="project">
+  <div class="proj-grid" id="projgrid">
+    <div>
+      <div class="proj-badge">Featured Project</div>
       <h2 class="proj-title">
         Fit<br>
         <span class="ghost">Hub.</span>
       </h2>
-      <p class="proj-desc">
-        A cross-platform fitness tracking app built to make consistency feel rewarding. 
-        Workout streaks, personalised day-wise plans, and real-time sync — all inside one clean app.
-      </p>
-
-      <ul class="features-list" id="features-list" aria-label="Project features">
-        <li class="feature-item"><div class="fi-dot">🔐</div> Secure authentication — login &amp; signup</li>
-        <li class="feature-item"><div class="fi-dot">📅</div> Day-wise personalised workout plans</li>
-        <li class="feature-item"><div class="fi-dot">⚡</div> Real-time sync via Cloud Firestore</li>
-        <li class="feature-item"><div class="fi-dot">🔥</div> Streak system to reinforce consistency</li>
-        <li class="feature-item"><div class="fi-dot">🎨</div> Responsive UI across iOS &amp; Android</li>
+      <p class="proj-desc">A cross-platform fitness tracking app built to make consistency feel rewarding. Workout streaks, personalised day-wise plans, and real-time sync — all in one clean app.</p>
+      <ul class="feat-list" id="featlist">
+        <li class="feat-item"><div class="feat-dot">🔐</div> Secure authentication — login & signup</li>
+        <li class="feat-item"><div class="feat-dot">📅</div> Day-wise personalised workout plans</li>
+        <li class="feat-item"><div class="feat-dot">⚡</div> Real-time sync via Cloud Firestore</li>
+        <li class="feat-item"><div class="feat-dot">🔥</div> Streak system to reinforce consistency</li>
+        <li class="feat-item"><div class="feat-dot">🎨</div> Responsive UI across iOS & Android</li>
       </ul>
-
-      <div class="proj-actions">
-        <a href="https://github.com/BishaL809/FitHub/releases" target="_blank" class="btn-primary mag-btn" data-cur-label="Download">
-          <div class="btn-bg"></div>
-          <span class="btn-text">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download APK
-          </span>
-        </a>
-        <a href="https://github.com/BishaL809" target="_blank" class="btn-ghost mag-btn" data-cur-label="GitHub">View Source</a>
+      <div class="stack-tags">
+        <span class="stag">Flutter</span><span class="stag">Dart</span><span class="stag">Firebase</span>
+        <span class="stag">Firestore</span><span class="stag">Android</span><span class="stag">iOS</span>
       </div>
-
-      <div class="stack-row">
-        <span class="stag">Flutter</span>
-        <span class="stag">Dart</span>
-        <span class="stag">Firebase</span>
-        <span class="stag">Firestore</span>
-        <span class="stag">Android</span>
-        <span class="stag">iOS</span>
+      <div class="proj-actions">
+        <a href="https://github.com/BishaL809/FitHub/releases" target="_blank" class="btn-fill c-btn" data-label="Download">↓ Download APK</a>
+        <a href="https://github.com/BishaL809" target="_blank" class="btn-outline c-btn" data-label="GitHub">View Source</a>
       </div>
     </div>
-
-    <!-- Phone Mockup -->
     <div class="phone-scene">
-      <div class="phone-glow-orb"></div>
-      <div class="phone-frame" id="phone-frame">
+      <div class="phone-glow"></div>
+      <div class="phone-body" id="phone">
         <div class="phone-notch"></div>
         <div class="phone-screen">
-          <div class="ps-top">
-            <div class="ps-app-name">FITHUB</div>
-            <div class="ps-time">9:41</div>
-          </div>
+          <div class="ps-header"><div class="ps-appname">FITHUB</div><div class="ps-time">9:41</div></div>
           <div class="ps-streak-card">
-            <div class="psc-flame">🔥</div>
+            <div class="psc-icon">🔥</div>
             <div>
-              <div class="psc-num" id="phone-streak">0</div>
-              <div class="psc-label">day streak</div>
+              <div class="psc-num" id="p-streak">0</div>
+              <div class="psc-sub">day streak</div>
             </div>
           </div>
-          <div class="ps-section-label">TODAY'S PLAN</div>
-          <div class="ps-plan-card">
+          <div class="ps-section">Today's Plan</div>
+          <div class="ps-plan">
             <div class="ps-plan-title">Push Day — Upper Body</div>
             <div class="ps-plan-sub">6 exercises · Est. 45 min</div>
           </div>
-          <div class="ps-section-label">WEEKLY PROGRESS</div>
+          <div class="ps-section">Weekly Progress</div>
           <div class="ps-week">
-            <div class="ps-day-row"><span class="ps-day-name">Mon</span><div class="ps-day-bar"><div class="ps-day-fill" data-w="100"></div></div></div>
-            <div class="ps-day-row"><span class="ps-day-name">Tue</span><div class="ps-day-bar"><div class="ps-day-fill" data-w="85"></div></div></div>
-            <div class="ps-day-row"><span class="ps-day-name">Wed</span><div class="ps-day-bar"><div class="ps-day-fill" data-w="100"></div></div></div>
-            <div class="ps-day-row"><span class="ps-day-name">Thu</span><div class="ps-day-bar"><div class="ps-day-fill" data-w="60"></div></div></div>
-            <div class="ps-day-row"><span class="ps-day-name">Fri</span><div class="ps-day-bar"><div class="ps-day-fill" data-w="100"></div></div></div>
+            <div class="ps-day"><span class="ps-day-lbl">Mon</span><div class="ps-day-track"><div class="ps-day-fill" data-w="100"></div></div></div>
+            <div class="ps-day"><span class="ps-day-lbl">Tue</span><div class="ps-day-track"><div class="ps-day-fill" data-w="85"></div></div></div>
+            <div class="ps-day"><span class="ps-day-lbl">Wed</span><div class="ps-day-track"><div class="ps-day-fill" data-w="100"></div></div></div>
+            <div class="ps-day"><span class="ps-day-lbl">Thu</span><div class="ps-day-track"><div class="ps-day-fill" data-w="60"></div></div></div>
+            <div class="ps-day"><span class="ps-day-lbl">Fri</span><div class="ps-day-track"><div class="ps-day-fill" data-w="100"></div></div></div>
           </div>
-          <div class="ps-btn">▶ Start Workout</div>
+          <div class="ps-cta">▶ Start Workout</div>
         </div>
       </div>
     </div>
@@ -993,499 +498,352 @@ footer {
 
 <hr class="divider"/>
 
-<!-- ══ SKILLS ═════════════════════════════════════════════════ -->
-<section class="section" id="skills" aria-label="Skills">
-  <div class="sec-eyebrow" id="skills-eyebrow">What I Bring</div>
-  <h2 class="sec-title" id="skills-title">Skills &amp; Stack</h2>
-
+<!-- SKILLS -->
+<section class="section" id="skills">
+  <div class="eyebrow">What I Bring</div>
+  <h2 class="sec-title">Skills & Stack</h2>
   <div class="skills-layout">
-    <div class="skill-cards" id="skill-cards">
-      <div class="skill-card" data-tilt>
-        <div class="sc-num">01</div>
-        <span class="sc-icon">📱</span>
-        <div class="sc-title">Flutter &amp; Dart</div>
-        <div class="sc-desc">Cross-platform apps with a single codebase — native performance, beautiful UI.</div>
-      </div>
-      <div class="skill-card" data-tilt>
-        <div class="sc-num">02</div>
-        <span class="sc-icon">🔐</span>
-        <div class="sc-title">Firebase Auth</div>
-        <div class="sc-desc">Secure, frictionless user authentication for mobile applications.</div>
-      </div>
-      <div class="skill-card" data-tilt>
-        <div class="sc-num">03</div>
-        <span class="sc-icon">🗄️</span>
-        <div class="sc-title">Cloud Firestore</div>
-        <div class="sc-desc">Real-time NoSQL database, synced across all devices instantly.</div>
-      </div>
-      <div class="skill-card" data-tilt>
-        <div class="sc-num">04</div>
-        <span class="sc-icon">🤖</span>
-        <div class="sc-title">Python &amp; AI/ML</div>
-        <div class="sc-desc">Learning to build smart features — models, predictions, recommendations.</div>
-      </div>
+    <div class="skill-cards" id="skcards">
+      <div class="sk-card"><div class="sk-num">01</div><span class="sk-icon">📱</span><div class="sk-title">Flutter & Dart</div><div class="sk-desc">Cross-platform apps with native performance and beautiful UI.</div></div>
+      <div class="sk-card"><div class="sk-num">02</div><span class="sk-icon">🔐</span><div class="sk-title">Firebase Auth</div><div class="sk-desc">Secure, frictionless user authentication for mobile apps.</div></div>
+      <div class="sk-card"><div class="sk-num">03</div><span class="sk-icon">🗄️</span><div class="sk-title">Cloud Firestore</div><div class="sk-desc">Real-time NoSQL database, synced across all devices.</div></div>
+      <div class="sk-card"><div class="sk-num">04</div><span class="sk-icon">🤖</span><div class="sk-title">Python & AI/ML</div><div class="sk-desc">Learning to build smart features — models, predictions, recommendations.</div></div>
     </div>
-
-    <div class="skill-bars" id="skill-bars">
-      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Flutter &amp; Dart</span><span class="sbar-pct">88%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="88"></div></div></div>
-      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Firebase &amp; Firestore</span><span class="sbar-pct">82%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="82"></div></div></div>
+    <div class="skill-bars" id="skbars">
+      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Flutter & Dart</span><span class="sbar-pct">88%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="88"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Firebase & Firestore</span><span class="sbar-pct">82%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="82"></div></div></div>
       <div class="sbar"><div class="sbar-top"><span class="sbar-name">UI/UX Design</span><span class="sbar-pct">78%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="78"></div></div></div>
-      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Git &amp; Version Control</span><span class="sbar-pct">80%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="80"></div></div></div>
-      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Python &amp; AI/ML</span><span class="sbar-pct">65%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="65"></div></div></div>
-      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Agile &amp; Collaboration</span><span class="sbar-pct">75%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="75"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Git & Version Control</span><span class="sbar-pct">80%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="80"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Python & AI/ML</span><span class="sbar-pct">65%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="65"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span class="sbar-name">Agile & Collaboration</span><span class="sbar-pct">75%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="75"></div></div></div>
     </div>
   </div>
 </section>
 
 <hr class="divider"/>
 
-<!-- ══ STREAK SIMULATOR (Standout Section) ═══════════════════ -->
-<section id="streak-section" aria-label="Streak Simulator">
-  <div class="streak-inner">
-    <div class="streak-bg-text" aria-hidden="true">14</div>
-    <div class="streak-eyebrow">Interactive · Scroll to unlock</div>
-    <div class="streak-counter-wrap">
-      <div class="streak-num-display" id="streak-count">0</div>
-      <span class="streak-suffix">day streak 🔥</span>
+<!-- STREAK -->
+<section id="streak">
+  <div class="streak-wrap">
+    <div class="streak-bg-word" aria-hidden="true">14</div>
+    <div class="streak-label">Interactive · Scroll to unlock</div>
+    <div class="streak-number" id="snum">0</div>
+    <div class="streak-sub">day streak 🔥</div>
+    <div class="cal-grid" id="calgrid" role="grid" aria-label="14-day calendar"></div>
+    <div class="streak-stats" id="sstats">
+      <div class="ss-stat"><div class="ss-num" id="ss-w">0</div><div class="ss-lbl">Workouts Logged</div></div>
+      <div class="ss-stat"><div class="ss-num" id="ss-c">0</div><div class="ss-lbl">Kcal Burned</div></div>
+      <div class="ss-stat"><div class="ss-num" id="ss-m">0</div><div class="ss-lbl">Minutes Active</div></div>
     </div>
-
-    <div class="streak-calendar" id="cal-grid" role="grid" aria-label="14-day streak calendar">
-      <!-- Injected by JS -->
-    </div>
-
-    <div class="streak-stats" id="streak-stats" style="opacity:0">
-      <div class="ss-item"><div class="ss-num" id="ss-workouts">0</div><div class="ss-label">Workouts Logged</div></div>
-      <div class="ss-item"><div class="ss-num" id="ss-calories">0</div><div class="ss-label">Kcal Burned</div></div>
-      <div class="ss-item"><div class="ss-num" id="ss-mins">0</div><div class="ss-label">Minutes Active</div></div>
-    </div>
-
-    <p class="streak-desc" id="streak-desc" style="opacity:0">
-      This is what 14 days of consistency looks like in FitHub. 
-      Each square is a day. Each flame is a win. <strong style="color:var(--cream)">Build your streak.</strong>
-    </p>
+    <p class="streak-desc" id="sdesc">This is what 14 days of consistency looks like in FitHub. Each square is a day. Each flame is a win. <strong style="color:var(--cream)">Build your streak.</strong></p>
   </div>
 </section>
 
 <hr class="divider"/>
 
-<!-- ══ CONTACT ════════════════════════════════════════════════ -->
-<section class="section" id="contact" aria-label="Contact">
-  <div class="sec-eyebrow">Let's Connect</div>
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="eyebrow">Let's Connect</div>
   <h2 class="sec-title">Get in Touch</h2>
-  <div class="contact-layout" style="margin-top:3rem;">
+  <div class="contact-grid">
     <div>
-      <p class="sec-sub">Open to freelance projects, internships &amp; full-time roles. If you're building something meaningful, let's talk.</p>
+      <p class="sec-sub">Open to freelance projects, internships & full-time roles. If you're building something meaningful, let's talk.</p>
       <div class="contact-items">
-        <a href="mailto:vishalkhanal321@gmail.com" class="contact-item mag-btn" data-cur-label="Email">
-          <div class="ci-icon-wrap">✉️</div>
-          <div><div class="ci-label">Email</div><div class="ci-val">vishalkhanal321@gmail.com</div></div>
+        <a href="mailto:vishalkhanal321@gmail.com" class="c-item c-btn" data-label="Email">
+          <div class="c-icon-wrap">✉️</div>
+          <div><div class="c-lbl">Email</div><div class="c-val">vishalkhanal321@gmail.com</div></div>
         </a>
-        <a href="tel:+918837466986" class="contact-item mag-btn" data-cur-label="Call">
-          <div class="ci-icon-wrap">📞</div>
-          <div><div class="ci-label">Phone</div><div class="ci-val">+91 88374 66986</div></div>
+        <a href="tel:+918837466986" class="c-item c-btn" data-label="Call">
+          <div class="c-icon-wrap">📞</div>
+          <div><div class="c-lbl">Phone</div><div class="c-val">+91 88374 66986</div></div>
         </a>
-        <a href="https://github.com/BishaL809" target="_blank" class="contact-item mag-btn" data-cur-label="GitHub">
-          <div class="ci-icon-wrap">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--amber)"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        <a href="https://github.com/BishaL809" target="_blank" class="c-item c-btn" data-label="GitHub">
+          <div class="c-icon-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--lime)"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
           </div>
-          <div><div class="ci-label">GitHub</div><div class="ci-val">github.com/BishaL809</div></div>
+          <div><div class="c-lbl">GitHub</div><div class="c-val">github.com/BishaL809</div></div>
         </a>
-        <a href="https://github.com/BishaL809/FitHub/releases" target="_blank" class="contact-item mag-btn" data-cur-label="Download">
-          <div class="ci-icon-wrap">📲</div>
-          <div><div class="ci-label">FitHub APK</div><div class="ci-val">Download &amp; try the app</div></div>
+        <a href="https://github.com/BishaL809/FitHub/releases" target="_blank" class="c-item c-btn" data-label="Download">
+          <div class="c-icon-wrap">📲</div>
+          <div><div class="c-lbl">FitHub APK</div><div class="c-val">Download & try the app</div></div>
         </a>
       </div>
     </div>
-
-    <div class="contact-cta-box">
-      <div class="ccb-orb"></div>
-      <div class="ccb-title">Have a project<br>in mind? <span>Let's build.</span></div>
-      <p class="ccb-sub">Drop me a message — I'll get back within 24 hours.</p>
-      <a href="mailto:vishalkhanal321@gmail.com" class="btn-primary mag-btn" data-cur-label="Send" style="width:fit-content">
-        <div class="btn-bg"></div>
-        <span class="btn-text">✉️ Send a Message</span>
-      </a>
+    <div class="contact-cta">
+      <div class="cta-orb"></div>
+      <div class="cta-title">Have a project<br>in mind? <span>Let's build.</span></div>
+      <p class="cta-sub">Drop me a message — I'll get back within 24 hours.</p>
+      <a href="mailto:vishalkhanal321@gmail.com" class="btn-fill c-btn" style="width:fit-content" data-label="Send">✉️ Send a Message</a>
     </div>
   </div>
 </section>
 
-<!-- ══ FOOTER ═════════════════════════════════════════════════ -->
 <footer>
-  <span class="footer-copy">© 2025 <span>Bishal Khanal</span> — Flutter Developer &amp; MCA (AI) Student</span>
-  <div class="footer-links">
+  <span class="foot-copy">© 2025 <span>Bishal Khanal</span> — Flutter Developer & MCA (AI) Student</span>
+  <div class="foot-links">
     <a href="https://github.com/BishaL809" target="_blank">GitHub</a>
     <a href="https://github.com/BishaL809/FitHub/releases" target="_blank">FitHub APK</a>
     <a href="mailto:vishalkhanal321@gmail.com">Email</a>
   </div>
 </footer>
 
-<!-- ══ SCRIPTS ════════════════════════════════════════════════ -->
+<style>
+@keyframes arrowAnim{0%,100%{transform:translateX(0)}50%{transform:translateX(8px)}}
+.about-scroll-hint span:last-child{animation:arrowAnim 1.4s ease-in-out infinite;display:inline-block}
+</style>
+
 <script>
-gsap.registerPlugin(ScrollTrigger, TextPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
-/* ── PAGE OVERLAY ──────────────────────────────────────────── */
-gsap.to('#page-overlay', {
-  scaleY: 0, duration: 1.2, ease: 'power4.inOut',
-  transformOrigin: 'top',
-  delay: 0.1,
-  onComplete: () => document.getElementById('page-overlay').style.display = 'none'
+/* OVERLAY */
+const overlayEl = document.getElementById('overlay');
+const overlayTxt = document.getElementById('overlay-text');
+gsap.timeline()
+  .to(overlayTxt,{opacity:0,y:-20,duration:.5,delay:.6,ease:'power2.in'})
+  .to(overlayEl,{yPercent:-100,duration:.8,ease:'power4.inOut',onComplete:()=>overlayEl.style.display='none'});
+
+/* PROGRESS */
+window.addEventListener('scroll',()=>{
+  const pct=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById('prog').style.width=pct+'%';
+},{passive:true});
+
+/* CURSOR */
+const outer=document.getElementById('cur-outer');
+const inner=document.getElementById('cur-inner');
+const ctxt=document.getElementById('cur-text');
+const ox=gsap.quickTo(outer,'x',{duration:.22,ease:'power2.out'});
+const oy=gsap.quickTo(outer,'y',{duration:.22,ease:'power2.out'});
+const ix=gsap.quickTo(inner,'x',{duration:.07,ease:'none'});
+const iy=gsap.quickTo(inner,'y',{duration:.07,ease:'none'});
+document.addEventListener('mousemove',e=>{
+  ix(e.clientX);iy(e.clientY);
+  ox(e.clientX);oy(e.clientY);
+  gsap.set(ctxt,{left:e.clientX+16,top:e.clientY-10});
 });
-
-/* ── PROGRESS BAR ──────────────────────────────────────────── */
-window.addEventListener('scroll', () => {
-  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
-  document.getElementById('progress').style.width = pct + '%';
-}, { passive: true });
-
-/* ── CUSTOM CURSOR ─────────────────────────────────────────── */
-const dot   = document.getElementById('cur-dot');
-const ring  = document.getElementById('cur-ring');
-const aura  = document.getElementById('cur-aura');
-const label = document.getElementById('cur-label');
-let mx = 0, my = 0;
-
-// Dot: instant
-const dotX = gsap.quickTo(dot,  'x', { duration: 0.07, ease: 'none' });
-const dotY = gsap.quickTo(dot,  'y', { duration: 0.07, ease: 'none' });
-// Ring: medium lag
-const ringX = gsap.quickTo(ring, 'x', { duration: 0.22, ease: 'power2.out' });
-const ringY = gsap.quickTo(ring, 'y', { duration: 0.22, ease: 'power2.out' });
-// Aura: very slow, dreamy
-const auraX = gsap.quickTo(aura, 'x', { duration: 1.0, ease: 'power1.out' });
-const auraY = gsap.quickTo(aura, 'y', { duration: 1.0, ease: 'power1.out' });
-
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  dotX(mx);  dotY(my);
-  ringX(mx); ringY(my);
-  auraX(mx); auraY(my);
-  gsap.set(label, { left: mx + 22, top: my });
-});
-
-document.addEventListener('mousedown', () => document.body.classList.add('cur-click'));
-document.addEventListener('mouseup',   () => document.body.classList.remove('cur-click'));
-
-document.querySelectorAll('[data-cur-label]').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    label.textContent = el.dataset.curLabel || 'View';
-    document.body.classList.add('cur-hover', 'cur-view');
+document.querySelectorAll('.c-btn,[data-label]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    ctxt.textContent=el.dataset.label||'View';
+    document.body.classList.add('c-hover','c-label');
   });
-  el.addEventListener('mouseleave', () => {
-    document.body.classList.remove('cur-hover', 'cur-view');
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('c-hover','c-label'));
+});
+document.querySelectorAll('a:not(.c-btn),button:not(.c-btn),.sk-card,.c-item,.panel-inner').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('c-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('c-hover'));
+});
+
+/* NAV */
+const nav=document.getElementById('nav');
+gsap.from(nav,{y:-60,opacity:0,duration:1,ease:'power3.out',delay:1.4});
+ScrollTrigger.create({trigger:'body',start:'top+=50 top',onEnter:()=>nav.classList.add('scrolled'),onLeaveBack:()=>nav.classList.remove('scrolled')});
+
+/* HERO ANIMATIONS */
+function splitWord(el){
+  const txt=el.textContent;
+  el.setAttribute('aria-label',txt);
+  el.innerHTML='';
+  [...txt].forEach(c=>{
+    const s=document.createElement('span');
+    s.style.cssText='display:inline-block;overflow:hidden;';
+    const inner2=document.createElement('span');
+    inner2.style.cssText='display:inline-block;';
+    inner2.textContent=c===' '?'\u00A0':c;
+    s.appendChild(inner2);
+    el.appendChild(s);
   });
-});
-
-document.querySelectorAll('a:not([data-cur-label]), button:not([data-cur-label]), .skill-card, .contact-item, .hero-chip, .sp-card').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cur-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cur-hover'));
-});
-
-/* ── NAVIGATION ─────────────────────────────────────────────── */
-const nav = document.getElementById('nav');
-gsap.from(nav, { y: -80, opacity: 0, duration: 1, ease: 'power3.out', delay: 1.2 });
-
-ScrollTrigger.create({
-  trigger: document.body,
-  start: 'top+=60 top',
-  onEnter: () => nav.classList.add('scrolled'),
-  onLeaveBack: () => nav.classList.remove('scrolled'),
-});
-
-/* ── TEXT CHARACTER SPLIT ───────────────────────────────────── */
-function splitChars(el) {
-  const text = el.textContent.trim();
-  el.setAttribute('aria-label', text);
-  el.innerHTML = '';
-  [...text].forEach(char => {
-    const span = document.createElement('span');
-    span.className = 'char';
-    span.textContent = char === ' ' ? '\u00A0' : char;
-    span.style.cssText = 'display:inline-block;overflow:hidden;';
-    el.appendChild(span);
-  });
-  return el.querySelectorAll('.char');
+  return el.querySelectorAll('span>span');
 }
 
-/* ── HERO ANIMATIONS ────────────────────────────────────────── */
-const heroTL = gsap.timeline({ delay: 1.3 });
+const htl=gsap.timeline({delay:1.5});
+htl.to('#htag',{opacity:1,y:0,duration:.7,ease:'power3.out'});
 
-heroTL
-  .to('#hero-eyebrow', { opacity: 1, y: 0, duration: .6, ease: 'power3.out' }, 0.1);
-
-// Line by line reveal for hero name
-['#line-1', '#line-2'].forEach((sel, i) => {
-  const el = document.querySelector(sel);
-  const chars = splitChars(el);
-  heroTL.from(chars, {
-    y: '120%', opacity: 0, duration: .9,
-    ease: 'power4.out', stagger: .035
-  }, 0.15 + i * 0.15);
+['#l1','#l2'].forEach((sel,i)=>{
+  const el=document.querySelector(sel);
+  const chars=splitWord(el);
+  htl.from(chars,{y:'110%',duration:.9,ease:'power4.out',stagger:.04},0.1+i*.12);
 });
 
-heroTL
-  .to('#hero-role', { opacity: 1, duration: .6, ease: 'power2.out' }, 0.55)
-  .to('#hero-desc', { opacity: 1, y: 0, duration: .7, ease: 'power3.out' }, 0.65)
-  .to('#hero-actions', { opacity: 1, y: 0, duration: .7, ease: 'power3.out' }, 0.78)
-  .to('#hero-scroll', { opacity: 1, y: 0, duration: .6, ease: 'power3.out' }, 0.9)
-  .to('#hero-right', { opacity: 1, y: 0, duration: .9, ease: 'power3.out' }, 0.4);
+htl.to('#hdesc',{opacity:1,y:0,duration:.7,ease:'power3.out'},0.5)
+   .to('#hactions',{opacity:1,y:0,duration:.7,ease:'power3.out'},0.65)
+   .to('#hscroll',{opacity:1,y:0,duration:.6,ease:'power3.out'},0.78)
+   .to('#hright',{opacity:1,y:0,duration:.8,ease:'power3.out'},0.4);
 
-/* Role rotating animation */
-const roleTrack = document.getElementById('role-track');
-const roleHeight = 2; // em units
-let currentRole = 0;
-setInterval(() => {
-  currentRole++;
-  if (currentRole >= 4) currentRole = 0;
-  gsap.to(roleTrack, {
-    y: `-${currentRole * 2}em`,
-    duration: .6, ease: 'power3.inOut'
+/* MAGNETIC BUTTONS */
+document.querySelectorAll('.btn-fill,.btn-outline,.nav-cta').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const dx=(e.clientX-r.left-r.width/2)*.22;
+    const dy=(e.clientY-r.top-r.height/2)*.22;
+    gsap.to(btn,{x:dx,y:dy,duration:.4,ease:'power2.out'});
   });
-}, 2200);
-
-/* ── MAGNETIC BUTTONS ───────────────────────────────────────── */
-document.querySelectorAll('.mag-btn').forEach(btn => {
-  btn.addEventListener('mousemove', e => {
-    const r = btn.getBoundingClientRect();
-    const dx = (e.clientX - r.left - r.width / 2) * .25;
-    const dy = (e.clientY - r.top - r.height / 2) * .25;
-    gsap.to(btn, { x: dx, y: dy, duration: .4, ease: 'power2.out' });
-  });
-  btn.addEventListener('mouseleave', () => {
-    gsap.to(btn, { x: 0, y: 0, duration: .7, ease: 'elastic.out(1, 0.5)' });
-  });
+  btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:.7,ease:'elastic.out(1,.5)'}));
 });
 
-/* ── SKILL CARD TILT ────────────────────────────────────────── */
-document.querySelectorAll('[data-tilt]').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const dx = (e.clientX - r.left) / r.width - .5;
-    const dy = (e.clientY - r.top) / r.height - .5;
-    gsap.to(card, {
-      rotateY: dx * 14, rotateX: -dy * 10,
-      translateZ: 20, duration: .35,
-      ease: 'power2.out', transformPerspective: 800
-    });
-  });
-  card.addEventListener('mouseleave', () => {
-    gsap.to(card, {
-      rotateY: 0, rotateX: 0, translateZ: 0,
-      duration: .6, ease: 'power2.out'
-    });
-  });
-});
+/* ABOUT HORIZONTAL SCROLL */
+const panelsOuter=document.getElementById('panels-outer');
+const panelsTrack=document.getElementById('panels-track');
+const pdots=document.querySelectorAll('.panel-dot');
 
-/* ── HORIZONTAL STORY SCROLL ────────────────────────────────── */
-const storyOuter = document.getElementById('story-outer');
-const storyTrack = document.getElementById('story-track');
-const storyDots  = document.querySelectorAll('.story-dot');
-
-if (storyTrack && storyOuter) {
-  const getScrollAmt = () => storyTrack.scrollWidth - storyOuter.clientWidth;
-
+if(panelsTrack){
   ScrollTrigger.create({
-    trigger: '#story',
-    start: 'top top',
-    end: () => '+=' + (storyTrack.scrollWidth - storyOuter.clientWidth + 200),
-    pin: true,
-    scrub: 1.2,
-    onUpdate: self => {
-      const amt = getScrollAmt();
-      gsap.set(storyTrack, { x: -amt * self.progress });
-      // Update dots
-      const activeIdx = Math.min(Math.floor(self.progress * 4), 3);
-      storyDots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+    trigger:'#about',start:'top top',
+    end:()=>'+='+(panelsTrack.scrollWidth-panelsOuter.clientWidth+100),
+    pin:true,scrub:1.2,
+    onUpdate:self=>{
+      const amt=panelsTrack.scrollWidth-panelsOuter.clientWidth;
+      gsap.set(panelsTrack,{x:-amt*self.progress});
+      const idx=Math.min(Math.floor(self.progress*4),3);
+      pdots.forEach((d,i)=>d.classList.toggle('on',i===idx));
     }
   });
 }
 
-/* ── SECTION REVEAL (generic) ───────────────────────────────── */
-function revealFrom(selector, opts = {}) {
-  document.querySelectorAll(selector).forEach(el => {
-    gsap.from(el, {
-      scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-      y: opts.y ?? 50, opacity: 0,
-      duration: opts.dur ?? .8, ease: 'power3.out',
-      delay: opts.delay ?? 0,
+/* GENERIC REVEALS */
+function rev(sel,opts={}){
+  document.querySelectorAll(sel).forEach(el=>{
+    gsap.from(el,{
+      scrollTrigger:{trigger:el,start:'top 85%',once:true},
+      y:opts.y??50,opacity:0,duration:opts.d??.85,ease:'power3.out',delay:opts.delay??0
     });
   });
 }
+rev('.eyebrow',{y:20});
+rev('.sec-title',{y:40,d:.9});
+rev('.sec-sub',{y:30,delay:.1});
+rev('.proj-badge',{y:20});
+rev('.proj-title',{y:60,d:1});
+rev('.proj-desc',{y:30,delay:.12});
+rev('.proj-actions',{y:20,delay:.2});
+rev('.stack-tags',{y:15,delay:.22});
+rev('.contact-cta',{y:40});
+rev('.cta-title',{y:30});
 
-revealFrom('.sec-eyebrow', { y: 20 });
-revealFrom('.sec-title', { y: 40, dur: .9 });
-revealFrom('.sec-sub', { y: 30, delay: .1 });
-revealFrom('.proj-label', { y: 20 });
-revealFrom('.proj-title', { y: 60, dur: 1 });
-revealFrom('.proj-desc', { y: 30, delay: .15 });
-revealFrom('.proj-actions', { y: 20, delay: .2 });
-revealFrom('.stack-row', { y: 15, delay: .25 });
-revealFrom('.hero-badge', { y: 20 });
-revealFrom('.contact-cta-box', { y: 40 });
-revealFrom('#skills-eyebrow', { y: 20 });
-revealFrom('#skills-title', { y: 40 });
-revealFrom('.ccb-title', { y: 30 });
-revealFrom('.ccb-sub', { y: 20, delay: .1 });
-revealFrom('.story-heading .sec-eyebrow, .story-heading .sec-title', { y: 30 });
-
-/* ── SKILL CARDS STAGGER ────────────────────────────────────── */
-gsap.from('#skill-cards .skill-card', {
-  scrollTrigger: { trigger: '#skill-cards', start: 'top 80%', once: true },
-  y: 60, opacity: 0, duration: .8, ease: 'power3.out', stagger: .12
+/* SKILL CARDS */
+gsap.from('#skcards .sk-card',{
+  scrollTrigger:{trigger:'#skcards',start:'top 80%',once:true},
+  y:60,opacity:0,duration:.8,ease:'power3.out',stagger:.12
 });
 
-/* ── SKILL BARS ─────────────────────────────────────────────── */
+/* SKILL CARD TILT */
+document.querySelectorAll('.sk-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const dx=(e.clientX-r.left)/r.width-.5;
+    const dy=(e.clientY-r.top)/r.height-.5;
+    gsap.to(card,{rotateY:dx*12,rotateX:-dy*8,translateZ:16,duration:.35,ease:'power2.out',transformPerspective:700});
+  });
+  card.addEventListener('mouseleave',()=>gsap.to(card,{rotateY:0,rotateX:0,translateZ:0,duration:.6,ease:'power2.out'}));
+});
+
+/* SKILL BARS */
 ScrollTrigger.create({
-  trigger: '#skill-bars',
-  start: 'top 75%',
-  once: true,
-  onEnter: () => {
-    document.querySelectorAll('.sbar-fill').forEach((el, i) => {
-      setTimeout(() => { el.style.width = el.dataset.w + '%'; }, i * 120 + 200);
+  trigger:'#skbars',start:'top 75%',once:true,
+  onEnter:()=>{
+    document.querySelectorAll('.sbar-fill').forEach((el,i)=>{
+      setTimeout(()=>el.style.width=el.dataset.w+'%',i*110+200);
     });
   }
 });
 
-/* ── PHONE MOCKUP ANIMATION ─────────────────────────────────── */
+/* PHONE */
 ScrollTrigger.create({
-  trigger: '#project',
-  start: 'top 60%',
-  once: true,
-  onEnter: () => {
-    // streak counter in phone
-    let n = 0;
-    const phoneStreak = document.getElementById('phone-streak');
-    const sti = setInterval(() => {
-      n++; phoneStreak.textContent = n;
-      if (n >= 14) clearInterval(sti);
-    }, 60);
-    // day bars
-    document.querySelectorAll('.ps-day-fill').forEach((el, i) => {
-      setTimeout(() => { el.style.width = el.dataset.w + '%'; }, i * 150 + 400);
+  trigger:'#project',start:'top 60%',once:true,
+  onEnter:()=>{
+    let n=0;
+    const pstreak=document.getElementById('p-streak');
+    const ti=setInterval(()=>{n++;pstreak.textContent=n;if(n>=14)clearInterval(ti);},55);
+    document.querySelectorAll('.ps-day-fill').forEach((el,i)=>{
+      setTimeout(()=>el.style.width=el.dataset.w+'%',i*140+350);
     });
-    // feature items
-    document.querySelectorAll('.feature-item').forEach((el, i) => {
-      setTimeout(() => el.classList.add('visible'), i * 150 + 600);
+    document.querySelectorAll('.feat-item').forEach((el,i)=>{
+      setTimeout(()=>el.classList.add('vis'),i*130+500);
     });
-    // phone frame entrance
-    gsap.from('#phone-frame', { y: 80, opacity: 0, duration: 1.2, ease: 'power3.out', delay: 0.2 });
+    gsap.from('#phone',{y:70,opacity:0,duration:1.2,ease:'power3.out',delay:.15});
   }
 });
 
-/* ── STREAK SIMULATOR ───────────────────────────────────────── */
-// Build calendar
-const calGrid = document.getElementById('cal-grid');
-const days = ['M','T','W','T','F','S','S'];
-days.forEach(d => {
-  const hdr = document.createElement('div');
-  hdr.style.cssText = 'font-family:var(--font-m);font-size:.6rem;color:var(--muted);text-align:center;padding-bottom:4px;';
-  hdr.textContent = d;
-  calGrid.appendChild(hdr);
+/* CONTACT ITEMS */
+gsap.from('.contact-items .c-item',{
+  scrollTrigger:{trigger:'.contact-items',start:'top 80%',once:true},
+  x:-40,opacity:0,duration:.7,ease:'power3.out',stagger:.1
 });
-const calDays = [];
-for (let i = 0; i < 14; i++) {
-  const cell = document.createElement('div');
-  cell.className = 'cal-day';
-  cell.textContent = i + 1;
-  cell.setAttribute('role', 'gridcell');
-  calGrid.appendChild(cell);
-  calDays.push(cell);
+
+/* FOOTER */
+gsap.from('footer',{
+  scrollTrigger:{trigger:'footer',start:'top 95%',once:true},
+  y:25,opacity:0,duration:.8,ease:'power3.out'
+});
+
+/* STREAK SECTION */
+const calEl=document.getElementById('calgrid');
+['M','T','W','T','F','S','S'].forEach(d=>{
+  const h=document.createElement('div');
+  h.style.cssText='font-family:JetBrains Mono,monospace;font-size:.58rem;color:var(--muted);text-align:center;padding-bottom:4px;';
+  h.textContent=d;calEl.appendChild(h);
+});
+const calCells=[];
+for(let i=0;i<14;i++){
+  const c=document.createElement('div');
+  c.className='cal-cell';
+  c.textContent=i+1;
+  c.setAttribute('role','gridcell');
+  calEl.appendChild(c);
+  calCells.push(c);
 }
 
+let statsShown=false;
 ScrollTrigger.create({
-  trigger: '#streak-section',
-  start: 'top top',
-  end: '+=180%',
-  pin: true,
-  scrub: 0.8,
-  onUpdate: self => {
-    const p = self.progress;
-    const count = Math.floor(p * 14);
-    document.getElementById('streak-count').textContent = count;
-
-    // Show calendar days
-    calDays.forEach((cell, i) => {
-      if (i < count) {
-        if (parseFloat(cell.style.opacity || '0') < 1) {
-          gsap.to(cell, { opacity: 1, scale: 1, duration: .4, ease: 'back.out(1.7)' });
-          cell.classList.add('active');
-          setTimeout(() => cell.classList.add('fire'), 300);
+  trigger:'#streak',start:'top top',end:'+=180%',pin:true,scrub:.8,
+  onUpdate:self=>{
+    const p=self.progress;
+    const cnt=Math.floor(p*14);
+    document.getElementById('snum').textContent=cnt;
+    calCells.forEach((c,i)=>{
+      if(i<cnt){
+        if(!c.classList.contains('on')){
+          gsap.to(c,{opacity:1,scale:1,duration:.4,ease:'back.out(1.7)'});
+          c.classList.add('on');
+          setTimeout(()=>c.classList.add('fire'),280);
         }
       } else {
-        cell.style.opacity = '0';
-        cell.style.transform = 'scale(0.5)';
-        cell.classList.remove('active', 'fire');
+        c.style.opacity='0';c.style.transform='scale(.5)';
+        c.classList.remove('on','fire');
       }
     });
-
-    // Reveal stats when near end
-    if (p > 0.7) {
-      const statsEl = document.getElementById('streak-stats');
-      const descEl = document.getElementById('streak-desc');
-      if (parseFloat(statsEl.style.opacity) < 1) {
-        gsap.to(statsEl, { opacity: 1, y: 0, duration: .8 });
-        gsap.to(descEl, { opacity: 1, y: 0, duration: .8, delay: .2 });
-        // Count up stats
-        let w = 0, c = 0, m = 0;
-        const ti = setInterval(() => {
-          w = Math.min(w + 1, 28);
-          c = Math.min(c + 120, 3360);
-          m = Math.min(m + 22, 630);
-          document.getElementById('ss-workouts').textContent = w;
-          document.getElementById('ss-calories').textContent = c.toLocaleString();
-          document.getElementById('ss-mins').textContent = m;
-          if (w >= 28) clearInterval(ti);
-        }, 40);
-      }
+    if(p>.7&&!statsShown){
+      statsShown=true;
+      gsap.to('#sstats',{opacity:1,y:0,duration:.8});
+      gsap.to('#sdesc',{opacity:1,y:0,duration:.8,delay:.2});
+      let w=0,c=0,m=0;
+      const ti2=setInterval(()=>{
+        w=Math.min(w+1,28);c=Math.min(c+120,3360);m=Math.min(m+22,630);
+        document.getElementById('ss-w').textContent=w;
+        document.getElementById('ss-c').textContent=c.toLocaleString();
+        document.getElementById('ss-m').textContent=m;
+        if(w>=28)clearInterval(ti2);
+      },38);
+    }
+    if(p<.7&&statsShown){
+      statsShown=false;
+      document.getElementById('sstats').style.opacity='0';
+      document.getElementById('sdesc').style.opacity='0';
     }
   }
 });
 
-/* ── CONTACT ITEMS STAGGER ──────────────────────────────────── */
-gsap.from('.contact-items .contact-item', {
-  scrollTrigger: { trigger: '.contact-items', start: 'top 80%', once: true },
-  x: -40, opacity: 0, duration: .7, ease: 'power3.out', stagger: .12
+/* PARALLAX MESH */
+document.addEventListener('mousemove',e=>{
+  const xp=(e.clientX/window.innerWidth-.5)*2;
+  const yp=(e.clientY/window.innerHeight-.5)*2;
+  gsap.to('.hero-mesh',{backgroundPositionX:xp*18+'px',backgroundPositionY:yp*10+'px',duration:1.5,ease:'power1.out'});
+},{passive:true});
+
+/* ABOUT TITLE */
+gsap.from('#about-title',{
+  scrollTrigger:{trigger:'#about',start:'top 80%',once:true},
+  y:50,opacity:0,duration:1,ease:'power4.out'
 });
-
-/* ── PARALLAX ORBS ──────────────────────────────────────────── */
-gsap.to('.hero-mesh', {
-  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
-  y: -120, ease: 'none'
-});
-
-/* ── FOOTER REVEAL ──────────────────────────────────────────── */
-gsap.from('footer', {
-  scrollTrigger: { trigger: 'footer', start: 'top 95%', once: true },
-  y: 30, opacity: 0, duration: .8, ease: 'power3.out'
-});
-
-/* ── PROJECT TITLE CHARS ────────────────────────────────────── */
-ScrollTrigger.create({
-  trigger: '.proj-title',
-  start: 'top 80%',
-  once: true,
-  onEnter: () => {
-    gsap.from('.proj-title', { y: 60, opacity: 0, duration: 1, ease: 'power4.out' });
-  }
-});
-
-/* ── SMOOTH HOVER MESH MOVE ─────────────────────────────────── */
-document.addEventListener('mousemove', e => {
-  const xPct = (e.clientX / window.innerWidth - 0.5) * 2;
-  const yPct = (e.clientY / window.innerHeight - 0.5) * 2;
-  gsap.to('.hero-mesh', {
-    '--x': (xPct * 8) + '%',
-    backgroundPositionX: (xPct * 20) + 'px',
-    backgroundPositionY: (yPct * 10) + 'px',
-    duration: 1.5, ease: 'power1.out'
-  });
-}, { passive: true });
-
-/* ── STORY TITLE REVEAL ─────────────────────────────────────── */
-gsap.from('#story-title', {
-  scrollTrigger: { trigger: '#story', start: 'top 80%', once: true },
-  y: 60, opacity: 0, duration: 1, ease: 'power4.out'
-});
-
 </script>
 </body>
 </html>
