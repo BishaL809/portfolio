@@ -61,26 +61,69 @@ img { max-width: 100%; }
 #progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--amber); z-index: 1000; width: 0%; transform-origin: left; }
 
 /* ── CUSTOM CURSOR ─────────────────────────────────────────── */
-#cur-dot {
-  position: fixed; width: 8px; height: 8px; border-radius: 50%;
-  background: var(--amber); pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%); transition: width .2s, height .2s, background .2s;
+/* Outer aura — large, slow, blurred glow */
+#cur-aura {
+  position: fixed; width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,189,31,.06) 0%, transparent 60%);
+  pointer-events: none; z-index: 9990;
+  transform: translate(-50%,-50%);
+  will-change: transform;
 }
+/* Mid ring — medium lag, crisp border */
 #cur-ring {
-  position: fixed; width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid rgba(245,189,31,.4); pointer-events: none; z-index: 9998;
-  transform: translate(-50%,-50%); transition: width .25s, height .25s, border-color .25s, opacity .25s;
+  position: fixed; width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid rgba(245,189,31,0.5);
+  pointer-events: none; z-index: 9997;
+  transform: translate(-50%,-50%);
+  will-change: transform;
+  transition: width .35s cubic-bezier(.25,1,.5,1),
+              height .35s cubic-bezier(.25,1,.5,1),
+              border-color .3s, opacity .3s;
 }
+/* Inner ball — solid, matches theme, instant follow */
+#cur-dot {
+  position: fixed; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--cream);
+  box-shadow: 0 0 0 1px rgba(245,189,31,.3);
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  will-change: transform;
+  transition: width .18s cubic-bezier(.34,1.56,.64,1),
+              height .18s cubic-bezier(.34,1.56,.64,1),
+              background .2s, box-shadow .2s;
+  mix-blend-mode: difference;
+}
+/* Label pill — appears on data-cur-label elements */
 #cur-label {
-  position: fixed; pointer-events: none; z-index: 9997;
-  font-family: var(--font-m); font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
-  color: #000; background: var(--amber); padding: 4px 10px; border-radius: 100px;
-  transform: translate(20px, -50%); opacity: 0; white-space: nowrap;
-  transition: opacity .2s;
+  position: fixed; pointer-events: none; z-index: 9996;
+  font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
+  color: #000; background: var(--amber); padding: 5px 12px; border-radius: 100px;
+  opacity: 0; white-space: nowrap;
+  transition: opacity .22s;
+  transform-origin: left center;
 }
-body.cur-hover #cur-dot { width: 14px; height: 14px; }
-body.cur-hover #cur-ring { width: 60px; height: 60px; border-color: rgba(245,189,31,.2); }
+/* Hover states */
+body.cur-hover #cur-dot {
+  width: 6px; height: 6px;
+  background: var(--amber);
+  box-shadow: 0 0 12px rgba(245,189,31,.6), 0 0 0 2px rgba(245,189,31,.25);
+}
+body.cur-hover #cur-ring {
+  width: 54px; height: 54px;
+  border-color: rgba(245,189,31,.25);
+}
+/* Drag / click state */
+body.cur-click #cur-dot {
+  width: 4px; height: 4px;
+  background: var(--amber);
+}
+body.cur-click #cur-ring {
+  width: 28px; height: 28px;
+  border-color: var(--amber);
+}
 body.cur-view #cur-label { opacity: 1; }
+/* Hide ring when label shows (cleaner) */
+body.cur-view #cur-ring { opacity: 0; }
 
 /* ── NAV ───────────────────────────────────────────────────── */
 nav {
@@ -138,17 +181,6 @@ nav.scrolled {
     radial-gradient(ellipse 60% 40% at 20% 60%, rgba(245,189,31,.07) 0%, transparent 65%),
     radial-gradient(ellipse 40% 50% at 75% 20%, rgba(255,92,26,.05) 0%, transparent 65%),
     radial-gradient(ellipse 80% 60% at 50% 100%, rgba(245,189,31,.04) 0%, transparent 55%);
-}
-.hero-tag {
-  display: inline-flex; align-items: center; gap: 9px;
-  background: rgba(245,189,31,.08); border: 1px solid rgba(245,189,31,.2);
-  color: var(--amber); font-family: var(--font-m); font-size: .65rem;
-  letter-spacing: .12em; text-transform: uppercase; padding: 7px 16px;
-  border-radius: 100px; margin-bottom: 2.5rem; opacity: 0;
-}
-.tag-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--amber);
-  animation: blink 1.8s ease-in-out infinite;
 }
 @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(1.8)} }
 
@@ -289,44 +321,86 @@ h1.hero-name .stroke {
 #story { background: var(--s1); position: relative; z-index: 1; }
 .story-outer { overflow: hidden; }
 .story-track {
-  display: flex; width: max-content; padding: 120px 5vw;
+  display: flex; width: max-content; padding: 80px 5vw 100px;
 }
 .story-panel {
-  width: 40vw; min-width: 380px; margin-right: 6vw;
+  width: 42vw; min-width: 400px; margin-right: 5vw;
   position: relative; flex-shrink: 0;
+  display: flex; flex-direction: column;
 }
-.story-panel:last-child { margin-right: 10vw; }
+.story-panel:last-child { margin-right: 12vw; }
+
+/* Panel inner card */
+.sp-card {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: 24px; padding: 44px 40px; height: 100%;
+  position: relative; overflow: hidden;
+  transition: border-color .4s, box-shadow .4s;
+}
+.sp-card:hover {
+  border-color: rgba(245,189,31,.2);
+  box-shadow: 0 32px 64px rgba(0,0,0,.4);
+}
+.sp-card-glow {
+  position: absolute; top: -60px; right: -60px; width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,189,31,.07), transparent 65%);
+  pointer-events: none;
+}
+
 .sp-num {
-  font-family: var(--font-m); font-size: .65rem; letter-spacing: .12em;
-  color: var(--amber); text-transform: uppercase; margin-bottom: 1.5rem;
-  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-m); font-size: .62rem; letter-spacing: .14em;
+  color: var(--amber); text-transform: uppercase; margin-bottom: 1.8rem;
+  display: flex; align-items: center; gap: 12px;
 }
-.sp-num::after { content: ''; flex: 1; height: 1px; background: var(--border2); max-width: 48px; }
-.sp-icon { font-size: 2.5rem; margin-bottom: 1.2rem; }
+.sp-num::after { content: ''; flex: 1; height: 1px; background: rgba(245,189,31,.2); max-width: 40px; }
+
+.sp-icon-wrap {
+  width: 56px; height: 56px; border-radius: 16px;
+  background: rgba(245,189,31,.08); border: 1px solid rgba(245,189,31,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; margin-bottom: 1.6rem;
+}
 .sp-title {
-  font-family: var(--font-d); font-size: 1.8rem; font-weight: 800;
-  letter-spacing: -.03em; color: var(--cream); margin-bottom: 1rem; line-height: 1.1;
+  font-family: var(--font-d); font-size: 1.7rem; font-weight: 800;
+  letter-spacing: -.035em; color: var(--cream); margin-bottom: 1.2rem; line-height: 1.1;
 }
-.sp-text { font-size: .93rem; color: var(--muted2); line-height: 1.8; }
-.sp-text strong { color: var(--cream); }
+.sp-text { font-size: .92rem; color: var(--muted2); line-height: 1.85; }
+.sp-text strong { color: var(--cream); font-weight: 600; }
+.sp-text em { color: var(--amber); font-style: normal; }
+
 .sp-pill {
-  display: inline-block; font-family: var(--font-m); font-size: .65rem;
-  letter-spacing: .08em; color: var(--amber); border: 1px solid rgba(245,189,31,.3);
-  background: rgba(245,189,31,.06); padding: 4px 12px; border-radius: 100px;
-  margin: 1.2rem 0;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-m); font-size: .62rem; letter-spacing: .08em;
+  color: var(--amber); border: 1px solid rgba(245,189,31,.25);
+  background: rgba(245,189,31,.06); padding: 6px 14px; border-radius: 100px;
+  margin: 1.4rem 0 1rem;
 }
+.sp-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--amber); }
+
+/* Story heading */
 .story-heading {
-  padding: 120px 5vw 60px; max-width: none;
+  padding: 80px 5vw 48px; max-width: none;
   display: flex; align-items: flex-end; justify-content: space-between;
   border-bottom: 1px solid var(--border);
 }
 .story-hint {
   display: flex; align-items: center; gap: 10px;
-  font-family: var(--font-m); font-size: .68rem; letter-spacing: .1em;
+  font-family: var(--font-m); font-size: .66rem; letter-spacing: .1em;
   color: var(--muted); text-transform: uppercase;
 }
 .sh-arrow { animation: arrowPulse 1.5s ease-in-out infinite; }
 @keyframes arrowPulse { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
+
+/* Progress dots for story */
+.story-dots {
+  display: flex; gap: 8px; padding: 24px 5vw 0;
+}
+.story-dot {
+  width: 24px; height: 3px; border-radius: 100px;
+  background: var(--border2); transition: background .4s, width .4s;
+}
+.story-dot.active { background: var(--amber); width: 40px; }
 
 /* ── FITHUB PROJECT ────────────────────────────────────────── */
 #project { background: var(--bg); }
@@ -616,7 +690,7 @@ footer {
   .skills-layout { grid-template-columns: 1fr; }
   .contact-layout { grid-template-columns: 1fr; }
   .nav-links { display: none; }
-  #cur-dot, #cur-ring, #cur-label { display: none; }
+  #cur-dot, #cur-ring, #cur-label, #cur-aura { display: none; }
   body { cursor: auto; }
   .story-panel { width: 80vw; }
 }
@@ -641,8 +715,9 @@ footer {
 <div id="progress"></div>
 
 <!-- Cursor -->
-<div id="cur-dot"></div>
+<div id="cur-aura"></div>
 <div id="cur-ring"></div>
+<div id="cur-dot"></div>
 <div id="cur-label">View</div>
 
 <!-- Background Mesh -->
@@ -665,10 +740,6 @@ footer {
 <!-- ══ HERO ═══════════════════════════════════════════════════ -->
 <section class="hero" id="home" aria-label="Hero">
   <div class="hero-left">
-    <div class="hero-tag" id="hero-tag">
-      <span class="tag-dot"></span>
-      Available for opportunities
-    </div>
     <p class="hero-eyebrow" id="hero-eyebrow">Hi, I'm</p>
 
     <h1 class="hero-name" id="hero-name" aria-label="Bishal Khanal">
@@ -747,75 +818,93 @@ footer {
 <div id="story">
   <div class="story-heading section" style="padding-bottom:0;padding-top:80px;">
     <div>
-      <div class="sec-eyebrow">Origin Story</div>
-      <h2 class="sec-title" id="story-title">The Journey</h2>
+      <div class="sec-eyebrow">The Human Behind the Code</div>
+      <h2 class="sec-title" id="story-title">About Me</h2>
     </div>
     <div class="story-hint">
-      <span>Scroll to explore</span>
+      <span>Drag or scroll</span>
       <span class="sh-arrow">→</span>
     </div>
   </div>
+  <div class="story-dots" id="story-dots">
+    <div class="story-dot active"></div>
+    <div class="story-dot"></div>
+    <div class="story-dot"></div>
+    <div class="story-dot"></div>
+  </div>
   <div class="story-outer" id="story-outer">
     <div class="story-track" id="story-track">
+
       <div class="story-panel">
-        <div class="sp-num">01 — Roots</div>
-        <div class="sp-icon">🌄</div>
-        <h3 class="sp-title">Born in the Hills</h3>
-        <p class="sp-text">
-          Growing up in <strong>Meghalaya</strong>, surrounded by rolling hills and slow internet — 
-          which, honestly, made me obsess over <strong>efficiency in apps</strong>. 
-          If something took too long to load, I wanted to fix it.
-        </p>
-        <span class="sp-pill">Meghalaya, Northeast India</span>
-        <p class="sp-text">That curiosity pulled me toward computers. Not just using them — building with them.</p>
+        <div class="sp-card">
+          <div class="sp-card-glow"></div>
+          <div class="sp-num">01 — Roots</div>
+          <div class="sp-icon-wrap">🌄</div>
+          <h3 class="sp-title">Hills, Slow Internet &amp; Big Dreams</h3>
+          <span class="sp-pill">Meghalaya, Northeast India</span>
+          <p class="sp-text">
+            I grew up in <strong>Meghalaya</strong> — lush hills, monsoon rain, and notoriously slow internet. 
+            That last part frustrated me enough to care deeply about <em>how apps felt</em>. 
+            If a button lagged, I noticed. If a UI was ugly, I couldn't unsee it.
+            <br/><br/>
+            That sensitivity turned into obsession. And obsession turned into code.
+          </p>
+        </div>
       </div>
 
       <div class="story-panel">
-        <div class="sp-num">02 — The Spark</div>
-        <div class="sp-icon">⚡</div>
-        <h3 class="sp-title">BCA & the Flutter Revelation</h3>
-        <p class="sp-text">
-          Three years at <strong>North East Hill University</strong> doing BCA. 
-          First year: confused. Second year: hooked on Flutter. Third year: shipping code.
-        </p>
-        <span class="sp-pill">2022–2025 · BCA</span>
-        <p class="sp-text">
-          Flutter clicked for me because one codebase could reach millions — Android, iOS, the whole world. 
-          That kind of <strong>leverage felt like a superpower</strong>.
-        </p>
+        <div class="sp-card">
+          <div class="sp-card-glow"></div>
+          <div class="sp-num">02 — The Spark</div>
+          <div class="sp-icon-wrap">⚡</div>
+          <h3 class="sp-title">Flutter Clicked. Everything Changed.</h3>
+          <span class="sp-pill">BCA · 2022–2025 · NEHU</span>
+          <p class="sp-text">
+            Three years at <strong>North East Hill University</strong> doing BCA. First year I was confused. 
+            Second year, I discovered Flutter — <em>one codebase, two platforms, infinite possibilities</em>.
+            <br/><br/>
+            That moment of shipping my first app on Android and iOS simultaneously felt like a cheat code. 
+            I wanted more of that feeling.
+          </p>
+        </div>
       </div>
 
       <div class="story-panel">
-        <div class="sp-num">03 — The Why</div>
-        <div class="sp-icon">💪</div>
-        <h3 class="sp-title">Why I Built FitHub</h3>
-        <p class="sp-text">
-          Simple problem: I kept missing workouts and losing streaks. 
-          No app felt <strong>personal enough</strong>. Most were bloated, paid, or ugly.
-        </p>
-        <span class="sp-pill">FitHub — Born from frustration</span>
-        <p class="sp-text">
-          So I built what I wanted: a clean, fast fitness tracker with 
-          <strong>streak motivation</strong>, day-wise plans, and real-time Firebase sync. 
-          No subscriptions. Just consistency.
-        </p>
+        <div class="sp-card">
+          <div class="sp-card-glow"></div>
+          <div class="sp-num">03 — The Why</div>
+          <div class="sp-icon-wrap">💪</div>
+          <h3 class="sp-title">FitHub Wasn't an Assignment. It Was a Problem.</h3>
+          <span class="sp-pill">Built out of frustration</span>
+          <p class="sp-text">
+            I kept missing workouts. Every app I tried was either paywalled, bloated, or just ugly. 
+            None of them felt like <strong>mine</strong>.
+            <br/><br/>
+            So I built FitHub — not because a professor told me to, but because I genuinely needed it. 
+            Streaks, day-wise plans, <em>real-time Firebase sync</em>. 
+            Clean. Fast. Personal.
+          </p>
+        </div>
       </div>
 
       <div class="story-panel">
-        <div class="sp-num">04 — Now</div>
-        <div class="sp-icon">🚀</div>
-        <h3 class="sp-title">Building the Future</h3>
-        <p class="sp-text">
-          Now at <strong>Parul University</strong> for MCA (AI) — learning to blend 
-          machine intelligence with mobile experiences.
-        </p>
-        <span class="sp-pill">2025–2026 · MCA (AI)</span>
-        <p class="sp-text">
-          The next chapter: AI-powered health features, smarter recommendations, 
-          and apps that <strong>know you</strong> before you tell them. 
-          Open to internships, freelance, and conversations.
-        </p>
+        <div class="sp-card">
+          <div class="sp-card-glow"></div>
+          <div class="sp-num">04 — Now</div>
+          <div class="sp-icon-wrap">🚀</div>
+          <h3 class="sp-title">Where Code Meets Intelligence</h3>
+          <span class="sp-pill">MCA (AI) · Parul University · 2025–26</span>
+          <p class="sp-text">
+            I'm now pursuing <strong>MCA in Artificial Intelligence</strong> at Parul University — 
+            learning how to make apps that <em>think, predict, and adapt</em>.
+            <br/><br/>
+            The next version of me ships AI-powered health features, smarter recommendations, 
+            and experiences that know what you need before you ask.
+            <strong>Open to internships, freelance, and great conversations.</strong>
+          </p>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -1049,24 +1138,32 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 /* ── CUSTOM CURSOR ─────────────────────────────────────────── */
-const dot = document.getElementById('cur-dot');
-const ring = document.getElementById('cur-ring');
+const dot   = document.getElementById('cur-dot');
+const ring  = document.getElementById('cur-ring');
+const aura  = document.getElementById('cur-aura');
 const label = document.getElementById('cur-label');
 let mx = 0, my = 0;
 
-const dotXTo = gsap.quickTo(dot, 'x', { duration: 0.1, ease: 'power2.out' });
-const dotYTo = gsap.quickTo(dot, 'y', { duration: 0.1, ease: 'power2.out' });
-const ringXTo = gsap.quickTo(ring, 'x', { duration: 0.4, ease: 'power2.out' });
-const ringYTo = gsap.quickTo(ring, 'y', { duration: 0.4, ease: 'power2.out' });
-const labelXTo = gsap.quickTo(label, 'x', { duration: 0.15 });
-const labelYTo = gsap.quickTo(label, 'y', { duration: 0.15 });
+// Dot: instant
+const dotX = gsap.quickTo(dot,  'x', { duration: 0.07, ease: 'none' });
+const dotY = gsap.quickTo(dot,  'y', { duration: 0.07, ease: 'none' });
+// Ring: medium lag
+const ringX = gsap.quickTo(ring, 'x', { duration: 0.22, ease: 'power2.out' });
+const ringY = gsap.quickTo(ring, 'y', { duration: 0.22, ease: 'power2.out' });
+// Aura: very slow, dreamy
+const auraX = gsap.quickTo(aura, 'x', { duration: 1.0, ease: 'power1.out' });
+const auraY = gsap.quickTo(aura, 'y', { duration: 1.0, ease: 'power1.out' });
 
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
-  dotXTo(mx); dotYTo(my);
-  ringXTo(mx); ringYTo(my);
-  gsap.set(label, { left: mx, top: my });
+  dotX(mx);  dotY(my);
+  ringX(mx); ringY(my);
+  auraX(mx); auraY(my);
+  gsap.set(label, { left: mx + 22, top: my });
 });
+
+document.addEventListener('mousedown', () => document.body.classList.add('cur-click'));
+document.addEventListener('mouseup',   () => document.body.classList.remove('cur-click'));
 
 document.querySelectorAll('[data-cur-label]').forEach(el => {
   el.addEventListener('mouseenter', () => {
@@ -1078,7 +1175,7 @@ document.querySelectorAll('[data-cur-label]').forEach(el => {
   });
 });
 
-document.querySelectorAll('a:not([data-cur-label]), button:not([data-cur-label]), .skill-card, .contact-item, .hero-chip').forEach(el => {
+document.querySelectorAll('a:not([data-cur-label]), button:not([data-cur-label]), .skill-card, .contact-item, .hero-chip, .sp-card').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('cur-hover'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('cur-hover'));
 });
@@ -1113,7 +1210,6 @@ function splitChars(el) {
 const heroTL = gsap.timeline({ delay: 1.3 });
 
 heroTL
-  .to('#hero-tag', { opacity: 1, y: 0, duration: .7, ease: 'power3.out' }, 0)
   .to('#hero-eyebrow', { opacity: 1, y: 0, duration: .6, ease: 'power3.out' }, 0.1);
 
 // Line by line reveal for hero name
@@ -1182,6 +1278,7 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
 /* ── HORIZONTAL STORY SCROLL ────────────────────────────────── */
 const storyOuter = document.getElementById('story-outer');
 const storyTrack = document.getElementById('story-track');
+const storyDots  = document.querySelectorAll('.story-dot');
 
 if (storyTrack && storyOuter) {
   const getScrollAmt = () => storyTrack.scrollWidth - storyOuter.clientWidth;
@@ -1195,6 +1292,9 @@ if (storyTrack && storyOuter) {
     onUpdate: self => {
       const amt = getScrollAmt();
       gsap.set(storyTrack, { x: -amt * self.progress });
+      // Update dots
+      const activeIdx = Math.min(Math.floor(self.progress * 4), 3);
+      storyDots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
     }
   });
 }
